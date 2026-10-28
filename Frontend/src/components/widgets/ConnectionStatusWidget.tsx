@@ -13,21 +13,21 @@ import type { ConnectionState } from '../../types/telemetry';
 
 function StateDisplay({ state }: { state: ConnectionState }) {
   const configs: Record<ConnectionState, { icon: typeof Wifi; color: string; bg: string; border: string; label: string; desc: string }> = {
-    idle:         { icon: Wifi, color: 'text-white/40', bg: 'bg-white/[0.04]', border: 'border-white/[0.08]', label: 'Idle', desc: 'Not started' },
-    connecting:   { icon: Loader2, color: 'text-[#c026d3]', bg: 'bg-[#7c3aed]/10', border: 'border-[#c026d3]/30', label: 'Connecting', desc: 'Establishing connection…' },
-    connected:    { icon: CheckCircle2, color: 'text-[#c026d3]', bg: 'bg-[#7c3aed]/15', border: 'border-[#c026d3]/35 shadow-[0_0_15px_rgba(192,38,211,0.2)]', label: 'Connected', desc: 'Live telemetry active' },
-    disconnected: { icon: WifiOff, color: 'text-[#FF453A]', bg: 'bg-[#FF453A]/10', border: 'border-[#FF453A]/30', label: 'Disconnected', desc: 'Reconnecting with backoff…' },
-    stale:        { icon: AlertTriangle, color: 'text-[#FF9F0A]', bg: 'bg-[#FF9F0A]/10', border: 'border-[#FF9F0A]/30', label: 'Stale Data', desc: 'No packets for >10 seconds' },
-    error:        { icon: AlertCircle, color: 'text-[#FF453A]', bg: 'bg-[#FF453A]/10', border: 'border-[#FF453A]/30', label: 'Error', desc: 'Connection error' },
+    idle:         { icon: Wifi, color: 'text-slate-400', bg: 'bg-white/[0.03]', border: 'border-white/10', label: 'IDLE', desc: 'Telemetry daemon paused' },
+    connecting:   { icon: Loader2, color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/20', label: 'CONNECTING', desc: 'Handshake in progress…' },
+    connected:    { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', label: 'LINK ONLINE', desc: 'Flight telemetry nominal' },
+    disconnected: { icon: WifiOff, color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20', label: 'DISCONNECTED', desc: 'Awaiting ground bridge…' },
+    stale:        { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20', label: 'LINK STALE', desc: 'No packets received >10s' },
+    error:        { icon: AlertCircle, color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20', label: 'LINK ERROR', desc: 'Socket connection failed' },
   };
   const cfg = configs[state];
   const Icon = cfg.icon;
   return (
-    <div className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl ${cfg.bg} border ${cfg.border} backdrop-blur-md transition-all duration-300`}>
-      <Icon size={18} className={`${cfg.color} ${state === 'connecting' ? 'animate-spin' : ''}`} />
+    <div className={`flex items-center gap-3 px-3 py-2 rounded-lg ${cfg.bg} border ${cfg.border} font-mono`}>
+      <Icon size={16} className={`${cfg.color} ${state === 'connecting' ? 'animate-spin' : ''}`} />
       <div>
-        <p className={`text-sm font-semibold tracking-tight ${cfg.color}`}>{cfg.label}</p>
-        <p className="text-xs text-white/40 mt-0.5">{cfg.desc}</p>
+        <p className={`text-xs font-bold tracking-wider ${cfg.color}`}>{cfg.label}</p>
+        <p className="text-[11px] text-slate-400 mt-0.5">{cfg.desc}</p>
       </div>
     </div>
   );
@@ -43,34 +43,34 @@ export function ConnectionStatusWidget() {
     : '—';
 
   const stats = [
-    { icon: Package, label: 'Received', value: diag.received.toLocaleString(), color: 'text-[#c026d3] drop-shadow-[0_0_8px_rgba(192,38,211,0.4)]' },
-    { icon: AlertTriangle, label: 'Invalid', value: diag.invalid.toString(), color: diag.invalid > 0 ? 'text-[#FF453A]' : 'text-white/40' },
-    { icon: Hash, label: 'Last Pkt#', value: diag.lastPacketNo?.toString() ?? '—', color: 'text-white/80' },
-    { icon: Clock, label: 'Last Seen', value: lastSeen, color: 'text-white/80' },
+    { icon: Package, label: 'RECEIVED', value: diag.received.toLocaleString(), color: 'text-sky-300' },
+    { icon: AlertTriangle, label: 'INVALID', value: diag.invalid.toString(), color: diag.invalid > 0 ? 'text-rose-400' : 'text-slate-500' },
+    { icon: Hash, label: 'LAST PKT', value: diag.lastPacketNo?.toString() ?? '—', color: 'text-slate-200' },
+    { icon: Clock, label: 'LAST SEEN', value: lastSeen, color: 'text-slate-200' },
   ];
 
   return (
-    <div className="h-full flex flex-col p-4 space-y-3 bg-transparent">
+    <div className="h-full flex flex-col p-3 space-y-2.5 bg-transparent font-mono">
       <StateDisplay state={state} />
 
-      <div className="text-xs text-white/40 font-mono truncate px-1">{wsUrl}</div>
+      <div className="text-[10px] text-slate-500 font-mono truncate px-1">ENDPOINT: {wsUrl}</div>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-1.5">
         {stats.map(({ icon: Icon, label, value, color }) => (
-          <div key={label} className="bg-white/[0.04] rounded-xl p-2.5 border border-white/[0.06] backdrop-blur-md">
+          <div key={label} className="bg-[#111624] rounded-lg p-2 border border-white/[0.06]">
             <div className="flex items-center gap-1.5 mb-1">
-              <Icon size={11} className="text-[#c026d3]/60" />
-              <span className="text-white/40 text-[11px] font-medium">{label}</span>
+              <Icon size={11} className="text-slate-500" />
+              <span className="text-slate-400 text-[10px] uppercase tracking-wider">{label}</span>
             </div>
-            <p className={`text-sm font-mono font-semibold tracking-tight ${color}`}>{value}</p>
+            <p className={`text-xs font-mono font-semibold tracking-tight tabular-nums ${color}`}>{value}</p>
           </div>
         ))}
       </div>
 
       {diag.lastRawJson && (
         <div className="flex-1 min-h-0">
-          <p className="text-[11px] uppercase tracking-wider text-[#c026d3]/70 mb-1 px-1 font-semibold">Last Raw Packet</p>
-          <pre className="text-xs text-[#c026d3] bg-black/80 border border-[#7c3aed]/25 rounded-xl p-2.5 overflow-auto h-full font-mono leading-relaxed shadow-inner">
+          <p className="text-[10px] uppercase tracking-wider text-slate-400 mb-1 px-1 font-semibold">RAW FRAME BUFFER</p>
+          <pre className="text-[11px] text-emerald-400 bg-[#080b12] border border-white/10 rounded-lg p-2 overflow-auto h-full font-mono leading-relaxed">
             {(() => { try { return JSON.stringify(JSON.parse(diag.lastRawJson), null, 2); } catch { return diag.lastRawJson; } })()}
           </pre>
         </div>

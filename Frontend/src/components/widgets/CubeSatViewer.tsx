@@ -64,29 +64,29 @@ export function CubeSatViewer({ title = 'CubeSat Attitude 3D' }: Props) {
     camera.position.set(2.8, 2.2, 3.5);
     camera.lookAt(0, 0, 0);
 
-    // Renderer
+    // Renderer with optimized pixel ratio (capped at 1.5 for 60fps)
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       container.appendChild(renderer.domElement);
     } catch {
       setWebGlSupported(false);
       return;
     }
 
-    // Lights - Accretion illumination
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+    // Solar illumination & Earth albedo
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xe879f9, 2.0); // Fuchsia accretion beam
-    dirLight1.position.set(5, 8, 5);
-    scene.add(dirLight1);
+    const sunLight = new THREE.DirectionalLight(0xfffaed, 2.4);
+    sunLight.position.set(6, 8, 6);
+    scene.add(sunLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0x818cf8, 1.0); // Violet secondary reflection
-    dirLight2.position.set(-5, -3, -4);
-    scene.add(dirLight2);
+    const earthAlbedo = new THREE.DirectionalLight(0x38bdf8, 0.7);
+    earthAlbedo.position.set(-6, -4, -5);
+    scene.add(earthAlbedo);
 
     // ── Build 1U CubeSat Spacecraft Model ────────────────────────────────────
     const satGroup = new THREE.Group();
@@ -181,8 +181,8 @@ export function CubeSatViewer({ title = 'CubeSat Attitude 3D' }: Props) {
     const axes = new THREE.AxesHelper(1.1);
     satGroup.add(axes);
 
-    // Cosmic coordinate reference grid
-    const grid = new THREE.GridHelper(8, 16, 0x4c1d95, 0x1e1038);
+    // Technical coordinate reference grid
+    const grid = new THREE.GridHelper(8, 16, 0x334155, 0x1e293b);
     grid.position.y = -1.5;
     scene.add(grid);
 
@@ -234,69 +234,60 @@ export function CubeSatViewer({ title = 'CubeSat Attitude 3D' }: Props) {
   const isLive = (roll !== null || ax !== null) && connState === 'connected' && !isStale;
   const statusLabel = isLive ? 'LIVE' : isStale ? 'STALE' : 'WAITING';
   const statusColor = isLive
-    ? 'text-emerald-300 bg-emerald-500/15 border-emerald-500/35 shadow-[0_0_8px_rgba(52,211,153,0.3)]'
+    ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
     : isStale
-    ? 'text-amber-300 bg-amber-500/15 border-amber-500/35 shadow-[0_0_8px_rgba(251,191,36,0.25)]'
-    : 'text-violet-300/70 bg-violet-950/40 border-violet-800/30';
+    ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+    : 'text-slate-400 bg-white/[0.04] border-white/10';
 
   if (!webGlSupported) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-4 text-center bg-black/60 rounded-2xl border border-violet-500/20">
-        <AlertTriangle size={32} className="text-amber-400 mb-2 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-        <p className="text-slate-200 font-semibold text-sm">WebGL Hardware Acceleration Offline</p>
-        <p className="text-violet-300/60 text-xs mt-1">Please enable WebGL in your browser to render the 3D CubeSat orientation mesh.</p>
+      <div className="h-full flex flex-col items-center justify-center p-4 text-center bg-black/60 rounded-xl border border-white/10">
+        <AlertTriangle size={28} className="text-amber-400 mb-2" />
+        <p className="text-slate-200 font-semibold text-sm">WebGL Offline</p>
+        <p className="text-slate-400 text-xs mt-1">Please enable WebGL in your browser to render the 3D spacecraft orientation.</p>
       </div>
     );
   }
 
   return (
-    <div className="h-full flex flex-col relative bg-transparent overflow-hidden select-none rounded-2xl">
+    <div className="h-full flex flex-col relative bg-transparent overflow-hidden select-none">
       {/* 3D Canvas Container */}
       <div ref={mountRef} className="flex-1 w-full min-h-0 relative" />
 
-      {/* Floating HUD Telemetry Readout */}
-      <div className="absolute top-2.5 left-3 pointer-events-none">
-        <div className="flex items-center gap-2 mb-1.5">
-          <Compass size={14} className="text-fuchsia-400 drop-shadow-[0_0_6px_rgba(232,121,249,0.8)]" />
-          <span className="text-[11px] font-bold uppercase tracking-widest bg-gradient-to-r from-fuchsia-300 to-violet-300 bg-clip-text text-transparent">
-            CubeSat Attitude
+      {/* Floating Precision HUD Telemetry Readout */}
+      <div className="absolute top-2 left-2.5 pointer-events-none">
+        <div className="flex items-center gap-2 mb-1.5 font-mono">
+          <Compass size={13} className="text-sky-400" />
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
+            ATTITUDE 3D
           </span>
-          <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${statusColor}`}>
+          <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-semibold ${statusColor}`}>
             {statusLabel}
           </span>
         </div>
 
-        <div
-          className="rounded-xl p-2.5 font-mono text-[11px] space-y-1 shadow-2xl transition-all"
-          style={{
-            background: 'rgba(14, 10, 26, 0.80)',
-            backdropFilter: 'blur(24px) saturate(190%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(190%)',
-            border: '1px solid rgba(192, 38, 211, 0.28)',
-            boxShadow: 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.12), 0 12px 30px -6px rgba(0, 0, 0, 0.75), 0 0 20px -5px rgba(192, 38, 211, 0.25)',
-          }}
-        >
+        <div className="rounded-lg p-2 font-mono text-[11px] space-y-1 bg-[#090d18]/90 border border-white/10 shadow-xl">
           <div className="flex justify-between gap-5">
-            <span className="text-violet-300/70">Roll (X):</span>
-            <span className="text-fuchsia-300 font-bold tabular-nums">
+            <span className="text-slate-400">ROLL (φ):</span>
+            <span className="text-sky-300 font-bold tabular-nums">
               {roll !== null ? `${roll > 0 ? '+' : ''}${roll.toFixed(1)}°` : 'N/A'}
             </span>
           </div>
           <div className="flex justify-between gap-5">
-            <span className="text-violet-300/70">Pitch (Y):</span>
-            <span className="text-fuchsia-300 font-bold tabular-nums">
+            <span className="text-slate-400">PITCH (θ):</span>
+            <span className="text-sky-300 font-bold tabular-nums">
               {pitch !== null ? `${pitch > 0 ? '+' : ''}${pitch.toFixed(1)}°` : 'N/A'}
             </span>
           </div>
           <div className="flex justify-between gap-5">
-            <span className="text-slate-500">Yaw (Z):</span>
-            <span className="text-slate-500 font-mono">N/A</span>
+            <span className="text-slate-500">YAW (ψ):</span>
+            <span className="text-slate-500 font-mono">CALC</span>
           </div>
           {ax !== null && (
-            <div className="pt-1.5 border-t border-violet-500/20 flex justify-between gap-3 text-[10px] text-violet-300/70">
-              <span>Accel:</span>
-              <span className="text-slate-200 font-mono font-medium">
-                {ax.toFixed(2)}, {ay?.toFixed(2) ?? '0'}, {az?.toFixed(2) ?? '0'} m/s²
+            <div className="pt-1 border-t border-white/[0.08] flex justify-between gap-3 text-[10px] text-slate-400">
+              <span>ACCEL:</span>
+              <span className="text-emerald-400 font-mono font-medium tabular-nums">
+                {ax.toFixed(2)}, {ay?.toFixed(2) ?? '0'}, {az?.toFixed(2) ?? '0'} G
               </span>
             </div>
           )}
@@ -305,7 +296,7 @@ export function CubeSatViewer({ title = 'CubeSat Attitude 3D' }: Props) {
 
       {/* Last update footer */}
       {mpuTimestamp && (
-        <div className="absolute bottom-2 right-2 text-[10px] text-violet-400/60 font-mono pointer-events-none px-2 py-0.5 rounded-md bg-black/40 border border-violet-500/20">
+        <div className="absolute bottom-1.5 right-1.5 text-[9px] text-slate-400 font-mono pointer-events-none px-1.5 py-0.5 rounded bg-black/60 border border-white/[0.08]">
           {formatDistanceToNow(new Date(mpuTimestamp), { addSuffix: true })}
         </div>
       )}

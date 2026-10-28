@@ -53,69 +53,64 @@ export function LiveValueCard({ fieldRef, title, compact = false }: Props) {
   }
 
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
-  const trendColor = trend === 'up' ? 'text-[#c026d3]' : trend === 'down' ? 'text-[#7c3aed]' : 'text-white/20';
+  const trendColor = trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-sky-400' : 'text-slate-600';
 
-  const valueColor = alertState === 'critical' ? 'text-[#FF453A]'
-    : alertState === 'warning' ? 'text-[#FF9F0A]'
-    : 'text-white';
+  const valueColor = alertState === 'critical' ? 'text-rose-400'
+    : alertState === 'warning' ? 'text-amber-400'
+    : 'text-slate-100';
 
   const formattedValue = value !== null
     ? value.toFixed(precision)
     : null;
 
   return (
-    <div className="h-full flex flex-col p-4 bg-transparent relative overflow-hidden transition-all duration-300">
-      {/* Background accretion glow when active telemetry data exists */}
-      {value !== null && (
-        <div className="absolute inset-0 bg-gradient-to-br from-[#7c3aed]/[0.08] via-transparent to-[#c026d3]/[0.05] pointer-events-none animate-shimmer-glass" />
-      )}
-
+    <div className="h-full flex flex-col p-3.5 bg-transparent relative overflow-hidden">
       <div className="flex items-start justify-between mb-auto z-10">
         <div>
-          <p className="text-[#c026d3]/80 text-[10px] font-semibold uppercase tracking-wider">{displayTitle}</p>
+          <p className="text-slate-400 text-[10px] font-mono font-semibold uppercase tracking-wider">{displayTitle}</p>
           {alertState !== 'none' && (
-            <div className="flex items-center gap-1 mt-1">
-              <AlertTriangle size={11} className={alertState === 'critical' ? 'text-[#FF453A]' : 'text-[#FF9F0A]'} />
-              <span className={`text-[11px] font-medium tracking-tight ${alertState === 'critical' ? 'text-[#FF453A]' : 'text-[#FF9F0A]'}`}>
-                {alertState === 'critical' ? 'Critical' : 'Warning'}
+            <div className="flex items-center gap-1 mt-0.5">
+              <AlertTriangle size={11} className={alertState === 'critical' ? 'text-rose-400' : 'text-amber-400'} />
+              <span className={`text-[10px] font-mono font-semibold uppercase ${alertState === 'critical' ? 'text-rose-400' : 'text-amber-400'}`}>
+                {alertState === 'critical' ? 'CRITICAL' : 'WARNING'}
               </span>
             </div>
           )}
         </div>
-        <TrendIcon size={14} className={`${trendColor} shrink-0 mt-0.5 drop-shadow-[0_0_6px_currentColor]`} />
+        <TrendIcon size={14} className={`${trendColor} shrink-0 mt-0.5`} />
       </div>
 
-      <div className="flex items-end gap-1.5 mt-2 z-10">
+      <div className="flex items-baseline gap-1.5 mt-2 z-10 font-mono">
         {formattedValue !== null ? (
           <>
-            <span className={`font-bold tabular-nums tracking-tight leading-none ${compact ? 'text-2xl' : 'text-3xl'} ${valueColor} drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]`}>
+            <span className={`font-bold tabular-nums tracking-tight leading-none ${compact ? 'text-2xl' : 'text-3xl'} ${valueColor}`}>
               {formattedValue}
             </span>
-            <span className="text-white/40 text-sm mb-0.5 font-medium">{unit}</span>
+            <span className="text-slate-400 text-xs font-medium">{unit}</span>
           </>
         ) : (
           <div className="flex flex-col gap-0.5">
-            <span className="text-white/20 text-2xl font-bold">—</span>
-            <span className="text-white/30 text-[11px] tracking-tight">Awaiting telemetry</span>
+            <span className="text-slate-600 text-2xl font-bold">—</span>
+            <span className="text-slate-500 text-[10px] font-mono">AWAITING PACKET</span>
           </div>
         )}
       </div>
 
       {timestamp && (
-        <div className="flex items-center gap-1.5 mt-2 text-white/40 text-[11px] font-mono z-10">
-          <Clock size={10} className="text-[#c026d3]/60" />
+        <div className="flex items-center gap-1.5 mt-2 text-slate-500 text-[10px] font-mono z-10">
+          <Clock size={10} className="text-slate-500" />
           <span>{formatDistanceToNow(new Date(timestamp), { addSuffix: true })}</span>
         </div>
       )}
 
       {/* Range indicator bar */}
       {fieldDef?.min !== undefined && fieldDef.max !== undefined && value !== null && (
-        <div className="mt-2.5 h-1 bg-[#7c3aed]/15 rounded-full overflow-hidden z-10 border border-white/[0.04]">
+        <div className="mt-2 h-1 bg-slate-800 rounded-full overflow-hidden z-10 border border-white/[0.04]">
           <div
-            className={`h-full rounded-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-              alertState === 'critical' ? 'bg-[#FF453A]'
-              : alertState === 'warning' ? 'bg-[#FF9F0A]'
-              : 'bg-gradient-to-r from-[#ff6b00] via-[#c026d3] to-[#7c3aed]'
+            className={`h-full rounded-full transition-all duration-300 ${
+              alertState === 'critical' ? 'bg-rose-500'
+              : alertState === 'warning' ? 'bg-amber-500'
+              : 'bg-sky-400'
             }`}
             style={{
               width: `${Math.min(100, Math.max(0, ((value - fieldDef.min) / (fieldDef.max - fieldDef.min)) * 100))}%`

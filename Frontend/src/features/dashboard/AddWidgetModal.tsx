@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Plus } from 'lucide-react';
+import { X, Plus, Activity, BarChart2, Radio, Compass, Orbit } from 'lucide-react';
 import { sensorRegistry } from '../sensors/registry';
 import { useDashboardStore } from '../../stores/dashboardStore';
 import { nanoid } from '../../stores/utils/nanoid';
@@ -8,17 +8,17 @@ import type { WidgetConfig, GridItemLayout, ChartType, TimeRange } from '../../t
 interface Props { onClose: () => void; }
 
 const CHART_TYPES: { value: ChartType; label: string; desc: string }[] = [
-  { value: 'value', label: 'Live Value', desc: 'Current reading with trend' },
-  { value: 'timeseries', label: 'Line Chart', desc: 'Time-series line plot' },
-  { value: 'area', label: 'Area Chart', desc: 'Filled area time-series' },
-  { value: 'bar', label: 'Bar Chart', desc: 'Bar chart over time' },
-  { value: 'gauge', label: 'Gauge', desc: 'Radial gauge' },
-  { value: 'cubesat', label: 'CubeSat 3D', desc: 'Real-time 3D attitude viewer' },
-  { value: 'map', label: 'GPS Map', desc: 'Geospatial position and ground track' },
+  { value: 'value', label: 'Live Value', desc: 'Current reading with numeric display' },
+  { value: 'timeseries', label: 'Line Chart', desc: 'Real-time telemetry trend plot' },
+  { value: 'area', label: 'Area Chart', desc: 'Filled area time-series plot' },
+  { value: 'bar', label: 'Bar Chart', desc: 'Discrete sample distribution' },
+  { value: 'gauge', label: 'Gauge', desc: 'Radial limit & threshold meter' },
+  { value: 'cubesat', label: 'CubeSat 3D', desc: 'Flight attitude Euler orientation' },
+  { value: 'map', label: 'GPS Ground Track', desc: 'Sub-satellite geospatial coordinates' },
 ];
 
 const TIME_RANGES: { value: TimeRange; label: string }[] = [
-  { value: 'live', label: 'Live (last 5m)' },
+  { value: 'live', label: 'Live (5m window)' },
   { value: '1m', label: '1 minute' },
   { value: '5m', label: '5 minutes' },
   { value: '15m', label: '15 minutes' },
@@ -84,51 +84,55 @@ export function AddWidgetModal({ onClose }: Props) {
   }, {});
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={onClose}>
       <div
-        className="rounded-[24px] p-6 w-full max-w-lg shadow-2xl animate-scale-in"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(124,58,237,0.06) 50%, rgba(0,0,0,0.85) 100%)',
-          backdropFilter: 'blur(40px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-          border: '1px solid rgba(255,255,255,0.14)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.8), 0 0 50px rgba(124,58,237,0.2)',
-        }}
+        className="rounded-xl p-5 w-full max-w-lg bg-[#0d111c] border border-white/[0.12] shadow-2xl animate-scale-in"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-white font-bold tracking-tight text-base heading-gradient">Add Widget</h3>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-all"><X size={18} /></button>
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.08]">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-sky-400" />
+            <h3 className="text-white font-semibold text-sm tracking-wide uppercase font-mono">
+              Add Telemetry Widget
+            </h3>
+          </div>
+          <button onClick={onClose} className="p-1 rounded text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors">
+            <X size={16} />
+          </button>
         </div>
 
         <div className="space-y-4">
           {/* Title */}
           <div>
-            <label className="block text-xs font-medium text-white/50 mb-1.5">Widget Title</label>
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-1.5">
+              Widget Title
+            </label>
             <input
               value={title}
               onChange={e => setTitle(e.target.value)}
-              placeholder="Auto from field…"
-              className="w-full liquid-glass-input px-3.5 py-2 text-sm"
+              placeholder="Auto-inferred from selected channel..."
+              className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-white placeholder-white/30 focus:outline-none focus:border-sky-500 font-mono"
             />
           </div>
 
           {/* Chart type */}
           <div>
-            <label className="block text-xs font-medium text-white/50 mb-1.5">Visualization Type</label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-1.5">
+              Visualization Mode
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {CHART_TYPES.map(ct => (
                 <button
                   key={ct.value}
                   onClick={() => setChartType(ct.value)}
-                  className={`px-2.5 py-2 rounded-xl text-xs border transition-all ${
+                  className={`px-3 py-2.5 rounded-lg text-left border transition-all ${
                     chartType === ct.value
-                      ? 'bg-[#7c3aed]/25 border-[#c026d3]/60 text-[#c026d3] font-semibold shadow-[0_0_12px_rgba(192,38,211,0.2)]'
-                      : 'border-white/[0.08] bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white'
+                      ? 'bg-sky-500/15 border-sky-400/60 text-sky-200'
+                      : 'border-white/[0.08] bg-[#131929]/50 text-white/60 hover:bg-[#131929] hover:text-white'
                   }`}
                 >
-                  <div className="font-medium">{ct.label}</div>
-                  <div className="text-white/40 text-[10px] mt-0.5 hidden sm:block">{ct.desc}</div>
+                  <div className="font-medium text-xs text-white">{ct.label}</div>
+                  <div className="text-white/40 text-[10px] mt-0.5 leading-tight">{ct.desc}</div>
                 </button>
               ))}
             </div>
@@ -137,70 +141,82 @@ export function AddWidgetModal({ onClose }: Props) {
           {/* Fields */}
           {fields.length > 0 ? (
             <div>
-              <label className="block text-xs font-medium text-white/50 mb-1.5">Telemetry Fields</label>
-              <div className="max-h-48 overflow-y-auto space-y-1 pr-1">
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-1.5">
+                Target Telemetry Channel
+              </label>
+              <div className="max-h-48 overflow-y-auto space-y-2 pr-1 border border-white/[0.08] rounded-lg p-2 bg-[#090c14]">
                 {Object.entries(grouped).map(([sensorId, sensorFields]) => {
                   const sensor = sensorRegistry.getSensor(sensorId);
                   return (
                     <div key={sensorId}>
-                      <p className="text-[11px] text-[#c026d3]/80 px-1 mb-1 font-semibold uppercase tracking-wider">{sensor?.displayName ?? sensorId}</p>
-                      {sensorFields.map(({ sensorId: sid, fieldDef }) => {
-                        const ref = `${sid}.${fieldDef.fieldKey}`;
-                        const selected = selectedFields.includes(ref);
-                        return (
-                          <button
-                            key={ref}
-                            onClick={() => toggleField(ref)}
-                            className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-sm transition-all ${
-                              selected
-                                ? 'bg-white/[0.08] border border-white/[0.14] text-white'
-                                : 'text-white/60 hover:bg-white/[0.04] border border-transparent'
-                            }`}
-                          >
-                            <div className={`w-3.5 h-3.5 rounded-md border shrink-0 flex items-center justify-center ${selected ? 'bg-[#c026d3] border-[#c026d3]' : 'border-white/30'}`}>
-                              {selected && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
-                            </div>
-                            <span className="flex-1 text-left text-xs">{fieldDef.label}</span>
-                            <span className="text-white/30 font-mono text-[11px]">{fieldDef.unit}</span>
-                          </button>
-                        );
-                      })}
+                      <p className="text-[10px] font-mono text-sky-400 px-1 mb-1 font-semibold uppercase tracking-wider">
+                        {sensor?.displayName ?? sensorId}
+                      </p>
+                      <div className="space-y-1">
+                        {sensorFields.map(({ sensorId: sid, fieldDef }) => {
+                          const ref = `${sid}.${fieldDef.fieldKey}`;
+                          const selected = selectedFields.includes(ref);
+                          return (
+                            <button
+                              key={ref}
+                              onClick={() => toggleField(ref)}
+                              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded text-xs transition-colors ${
+                                selected
+                                  ? 'bg-sky-500/20 border border-sky-400/40 text-white font-medium'
+                                  : 'text-white/70 hover:bg-white/[0.04] border border-transparent'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className={`w-1.5 h-1.5 rounded-full ${selected ? 'bg-sky-400' : 'bg-white/20'}`} />
+                                <span>{fieldDef.label}</span>
+                              </div>
+                              <span className="text-white/40 font-mono text-[10px]">{fieldDef.unit}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
           ) : (
-            <div className="text-center text-white/40 text-sm py-4 border border-dashed border-white/10 rounded-xl">
-              No sensor fields available. Configure sensors first.
+            <div className="text-center text-white/40 text-xs py-4 border border-dashed border-white/10 rounded-lg font-mono">
+              No telemetry channels detected. Check flight sensors.
             </div>
           )}
 
           {/* Time range (for chart types) */}
           {!['value', 'gauge'].includes(chartType) && (
             <div>
-              <label className="block text-xs font-medium text-white/50 mb-1.5">Time Range</label>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-white/60 mb-1.5">
+                Sampling Time Window
+              </label>
               <select
                 value={timeRange}
                 onChange={e => setTimeRange(e.target.value as TimeRange)}
-                className="w-full liquid-glass-input px-3 py-2 text-sm bg-black/70"
+                className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 font-mono"
               >
-                {TIME_RANGES.map(r => <option key={r.value} value={r.value} className="bg-black text-white">{r.label}</option>)}
+                {TIME_RANGES.map(r => (
+                  <option key={r.value} value={r.value} className="bg-[#0d111c] text-white">
+                    {r.label}
+                  </option>
+                ))}
               </select>
             </div>
           )}
         </div>
 
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-2.5 mt-5 pt-4 border-t border-white/[0.08]">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 border border-white/[0.12] bg-white/[0.06] hover:bg-white/[0.1] text-white/70 rounded-xl transition-all text-sm font-medium"
+            className="flex-1 py-2 border border-white/[0.1] bg-[#131929] hover:bg-[#1a2236] text-white/70 hover:text-white rounded-lg text-xs font-mono uppercase tracking-wider transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleAdd}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 liquid-glass-btn-primary text-sm font-semibold transition-all"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors shadow-sm"
           >
             <Plus size={14} /> Add Widget
           </button>

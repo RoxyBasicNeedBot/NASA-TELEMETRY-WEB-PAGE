@@ -3,10 +3,6 @@ import { Database, Download, RefreshCw } from 'lucide-react';
 import { format, subHours, subMinutes } from 'date-fns';
 import { sensorRegistry } from '../sensors/registry';
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Data History Page â€” Black Hole Singularity + Apple Liquid Glass Table
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
 const BACKEND =
   typeof window !== 'undefined' &&
   window.location.hostname !== 'localhost' &&
@@ -63,7 +59,7 @@ export function DataHistoryPage() {
     }
   };
 
-  useEffect(() => { if (selectedField) fetchHistory(); }, [selectedField, from, to]);  // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (selectedField) fetchHistory(); }, [selectedField, from, to]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleExportCSV = async () => {
     if (!selectedField) return;
@@ -75,7 +71,7 @@ export function DataHistoryPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `vyomaastra_${sensorId}_${fieldKey}_${Date.now()}.csv`;
+      a.download = `telemetry_${sensorId}_${fieldKey}_${Date.now()}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
@@ -84,27 +80,29 @@ export function DataHistoryPage() {
   };
 
   return (
-    <div className="p-6 space-y-5 bg-transparent">
-      <div>
-        <h1 className="text-xl font-bold tracking-tight heading-gradient flex items-center gap-2">
-          <Database size={20} className="text-[#c026d3]" /> Data History
-        </h1>
-        <p className="text-white/40 text-sm mt-1">Query and export historical telemetry from persistent storage</p>
+    <div className="p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-base font-semibold text-white tracking-wide uppercase font-mono flex items-center gap-2">
+            <Database size={16} className="text-sky-400" /> Telemetry Archive Log
+          </h1>
+          <p className="text-white/40 text-xs font-mono mt-0.5">Historical telemetry storage retrieval and data export</p>
+        </div>
       </div>
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 liquid-glass-card p-4">
+      <div className="flex flex-wrap items-center gap-3 bg-[#0d111c] border border-white/[0.08] rounded-xl p-3">
         {/* Field selector */}
         <div>
-          <label className="block text-xs text-white/50 mb-1">Field</label>
+          <label className="block text-[10px] font-mono uppercase tracking-wider text-white/50 mb-1">Channel</label>
           <select
             value={selectedField}
             onChange={e => setSelectedField(e.target.value)}
-            className="liquid-glass-input px-3 py-2 text-sm bg-black/60"
+            className="bg-[#131929] border border-white/[0.1] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
           >
             {fields.map(({ sensorId, fieldDef }) => (
-              <option key={`${sensorId}.${fieldDef.fieldKey}`} value={`${sensorId}.${fieldDef.fieldKey}`} className="bg-black text-white">
-                {sensorRegistry.getSensor(sensorId)?.displayName} Â· {fieldDef.label}
+              <option key={`${sensorId}.${fieldDef.fieldKey}`} value={`${sensorId}.${fieldDef.fieldKey}`} className="bg-[#0d111c] text-white">
+                {sensorRegistry.getSensor(sensorId)?.displayName} · {fieldDef.label}
               </option>
             ))}
           </select>
@@ -112,13 +110,13 @@ export function DataHistoryPage() {
 
         {/* Presets */}
         <div>
-          <label className="block text-xs text-white/50 mb-1">Quick range</label>
+          <label className="block text-[10px] font-mono uppercase tracking-wider text-white/50 mb-1">Time Window</label>
           <div className="flex gap-1.5">
             {PRESETS.map(p => (
               <button
                 key={p.label}
                 onClick={() => { setFrom(p.from()); setTo(Date.now()); }}
-                className="px-2.5 py-1.5 text-xs rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-white/70 hover:text-white transition-all backdrop-blur-md"
+                className="px-2.5 py-1.5 text-xs rounded-lg bg-[#131929] hover:bg-[#1a2236] border border-white/[0.08] text-white/70 hover:text-white transition-colors font-mono"
               >
                 {p.label}
               </button>
@@ -129,57 +127,57 @@ export function DataHistoryPage() {
         <div className="flex gap-2 ml-auto">
           <button
             onClick={fetchHistory}
-            className="flex items-center gap-1.5 px-3.5 py-2 liquid-glass-btn-primary text-sm font-semibold transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#131929] hover:bg-[#1a2236] border border-white/[0.1] text-white/80 hover:text-white rounded-lg text-xs font-mono uppercase tracking-wider transition-colors"
           >
-            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} /> Refresh
+            <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Query
           </button>
           <button
             onClick={handleExportCSV}
             disabled={rows.length === 0}
-            className="flex items-center gap-1.5 px-3.5 py-2 border border-white/[0.12] bg-white/[0.06] hover:bg-white/[0.1] text-white/80 rounded-xl text-sm transition-all disabled:opacity-40 backdrop-blur-md"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors disabled:opacity-40"
           >
-            <Download size={13} /> CSV
+            <Download size={12} /> Export CSV
           </button>
         </div>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="bg-[#FF453A]/10 border border-[#FF453A]/30 text-[#FF453A] text-sm rounded-xl px-4 py-3 backdrop-blur-md">
-          {error}. <span className="text-white/40">Start the backend: <code className="font-mono text-xs text-white/60">cd server && npm run dev</code></span>
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-lg px-3 py-2 font-mono">
+          {error}
         </div>
       )}
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-xs font-mono text-white/40 px-1">
-        <span>{totalCount.toLocaleString()} total records</span>
-        <span>Showing {rows.length}</span>
+      <div className="flex items-center gap-4 text-[11px] font-mono text-white/40 px-1">
+        <span>{totalCount.toLocaleString()} total entries</span>
+        <span>Displaying {rows.length}</span>
         {rows.length > 0 && (
           <>
-            <span>From {format(new Date(rows[0].ts), 'HH:mm:ss')}</span>
-            <span>To {format(new Date(rows[rows.length - 1].ts), 'HH:mm:ss')}</span>
+            <span>Start: {format(new Date(rows[0].ts), 'HH:mm:ss')} UTC</span>
+            <span>End: {format(new Date(rows[rows.length - 1].ts), 'HH:mm:ss')} UTC</span>
           </>
         )}
       </div>
 
       {/* Table */}
-      <div className="liquid-glass-card overflow-hidden">
-        <div className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 text-xs text-[#c026d3] px-4 py-2.5 border-b border-white/[0.08] bg-white/[0.02] uppercase tracking-wider font-semibold">
-          <span className="w-24">Timestamp</span>
-          <span className="w-16 ml-4">Pkt#</span>
+      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl overflow-hidden">
+        <div className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 text-[10px] text-white/50 px-4 py-2 border-b border-white/[0.08] bg-[#090c14] uppercase tracking-wider font-mono">
+          <span className="w-28">Timestamp</span>
+          <span className="w-20 ml-4">Packet#</span>
           <span className="ml-4">Value</span>
-          <span className="w-16">Unit</span>
-          <span className="w-16">Quality</span>
+          <span className="w-20">Unit</span>
+          <span className="w-20">Quality</span>
         </div>
 
-        <div className="max-h-[50vh] overflow-y-auto">
+        <div className="max-h-[55vh] overflow-y-auto">
           {loading && (
-            <div className="px-4 py-8 text-center text-white/40 text-sm">Loading telemetry historyâ€¦</div>
+            <div className="px-4 py-8 text-center text-white/40 text-xs font-mono">Querying historical records...</div>
           )}
           {!loading && rows.length === 0 && (
-            <div className="px-4 py-8 text-center text-white/40 text-sm">
-              No data in selected range.{' '}
-              {error ? 'Backend not running.' : 'Ensure bridge is running and telemetry is flowing.'}
+            <div className="px-4 py-8 text-center text-white/40 text-xs font-mono">
+              No telemetry in selected range.{' '}
+              {error ? 'Telemetry server offline.' : 'Awaiting sensor packets.'}
             </div>
           )}
           {rows.map((row) => {
@@ -187,16 +185,16 @@ export function DataHistoryPage() {
             return (
               <div
                 key={row.id}
-                className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 px-4 py-2.5 border-b border-white/[0.04] hover:bg-white/[0.04] transition-all items-center text-xs"
+                className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 px-4 py-2 border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors items-center text-xs font-mono"
               >
-                <span className="text-white/50 font-mono w-24">{format(new Date(row.ts), 'HH:mm:ss.SSS')}</span>
-                <span className="text-white/30 font-mono w-16 ml-4">{row.packet_no ?? 'â€”'}</span>
-                <span className="text-[#c026d3] font-mono font-semibold ml-4 drop-shadow-[0_0_6px_rgba(192,38,211,0.3)]">
+                <span className="text-white/50 w-28">{format(new Date(row.ts), 'HH:mm:ss.SSS')}</span>
+                <span className="text-white/30 w-20 ml-4">{row.packet_no ?? '—'}</span>
+                <span className="text-sky-300 font-semibold ml-4">
                   {row.value.toFixed(fd?.precision ?? 2)}
                 </span>
-                <span className="text-white/40 w-16 font-mono">{fd?.unit}</span>
-                <span className={`w-16 font-medium ${row.quality === 'ok' ? 'text-[#30D158]' : 'text-[#FF9F0A]'}`}>
-                  {row.quality}
+                <span className="text-white/40 w-20">{fd?.unit}</span>
+                <span className={`w-20 font-medium ${row.quality === 'ok' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {row.quality.toUpperCase()}
                 </span>
               </div>
             );

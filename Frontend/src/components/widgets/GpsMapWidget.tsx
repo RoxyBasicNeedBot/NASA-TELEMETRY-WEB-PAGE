@@ -26,12 +26,12 @@ export function GpsMapWidget({ title = 'GPS Position & Ground Track' }: Props) {
 
   const status = !hasData ? 'WAITING' : !hasLock ? 'NO FIX' : isStale ? 'STALE' : 'LIVE';
   const statusColor = status === 'LIVE'
-    ? 'text-[#c026d3] bg-[#7c3aed]/15 border-[#c026d3]/40 shadow-[0_0_10px_rgba(192,38,211,0.3)]'
+    ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
     : status === 'NO FIX'
-    ? 'text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/30'
+    ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
     : status === 'STALE'
-    ? 'text-[#f59e0b] bg-[#f59e0b]/10 border-[#f59e0b]/30'
-    : 'text-white/40 bg-white/[0.04] border-white/[0.08]';
+    ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+    : 'text-slate-400 bg-white/[0.04] border-white/10';
 
   // Map projection: Equirectangular mapping from [-180, 180] and [-90, 90] to percent [0, 100%]
   const mapPoint = useMemo(() => {
@@ -42,24 +42,24 @@ export function GpsMapWidget({ title = 'GPS Position & Ground Track' }: Props) {
   }, [hasLock, latitude, longitude]);
 
   return (
-    <div className="h-full flex flex-col bg-transparent p-3.5 overflow-hidden select-none">
+    <div className="h-full flex flex-col bg-transparent p-3 overflow-hidden select-none">
       {/* Top Bar Readout */}
-      <div className="flex items-center justify-between pb-2.5 border-b border-white/[0.06] shrink-0">
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] shrink-0">
         <div className="flex items-center gap-2">
-          <Globe size={14} className="text-[#c026d3]" />
-          <span className="text-xs font-semibold text-white/80 uppercase tracking-wider">{title}</span>
-          <span className={`text-[10px] font-mono px-2 py-0.5 rounded-lg border font-medium ${statusColor}`}>
+          <Globe size={14} className="text-sky-400" />
+          <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">{title}</span>
+          <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border font-semibold ${statusColor}`}>
             {status}
           </span>
         </div>
 
         <div className="flex items-center gap-3 text-xs font-mono">
-          <div className="flex items-center gap-1.5 text-white/50">
-            <Signal size={12} className={satellites && satellites >= 4 ? 'text-[#c026d3]' : 'text-white/30'} />
-            <span>Sats: <strong className="text-white font-medium">{satellites !== null ? satellites : '—'}</strong></span>
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <Signal size={12} className={satellites && satellites >= 4 ? 'text-sky-400' : 'text-slate-500'} />
+            <span>SATS: <strong className="text-slate-200 font-medium">{satellites !== null ? satellites : '—'}</strong></span>
           </div>
-          <div className="flex items-center gap-1.5 text-white/50">
-            <span>Fix: <strong className={hasLock ? 'text-[#c026d3]' : 'text-[#f59e0b]'}>{gpsFix !== null ? (gpsFix === 1 ? '3D' : gpsFix === 2 ? 'DGPS' : 'None') : '—'}</strong></span>
+          <div className="flex items-center gap-1.5 text-slate-400">
+            <span>FIX: <strong className={hasLock ? 'text-emerald-400' : 'text-amber-400'}>{gpsFix !== null ? (gpsFix === 1 ? '3D' : gpsFix === 2 ? 'DGPS' : 'None') : '—'}</strong></span>
           </div>
         </div>
       </div>
@@ -99,54 +99,54 @@ export function GpsMapWidget({ title = 'GPS Position & Ground Track' }: Props) {
             style={{ left: `${mapPoint.x}%`, top: `${mapPoint.y}%` }}
           >
             {/* Pulsing ring */}
-            <div className="w-8 h-8 rounded-full bg-[#c026d3]/25 border border-[#c026d3] animate-ping absolute -top-4 -left-4" />
+            <div className="w-8 h-8 rounded-full bg-sky-500/25 border border-sky-400 animate-ping absolute -top-4 -left-4" />
             {/* Center target point */}
-            <div className="w-3.5 h-3.5 rounded-full bg-[#c026d3] border-2 border-black shadow-[0_0_12px_#c026d3] relative flex items-center justify-center">
+            <div className="w-3.5 h-3.5 rounded-full bg-sky-400 border-2 border-black relative flex items-center justify-center">
               <div className="w-1 h-1 rounded-full bg-white" />
             </div>
             {/* Crosshair lines */}
-            <div className="w-12 h-px bg-[#c026d3]/60 absolute top-1.5 -left-4 pointer-events-none" />
-            <div className="h-12 w-px bg-[#c026d3]/60 absolute -top-4 left-1.5 pointer-events-none" />
+            <div className="w-12 h-px bg-sky-400/60 absolute top-1.5 -left-4 pointer-events-none" />
+            <div className="h-12 w-px bg-sky-400/60 absolute -top-4 left-1.5 pointer-events-none" />
           </div>
         ) : (
           /* No Fix / Waiting Overlay */
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm p-4 text-center">
-            <AlertCircle size={22} className="text-[#f59e0b] mb-1.5 animate-pulse" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#07090e]/90 p-4 text-center">
+            <AlertCircle size={20} className="text-amber-400 mb-1.5" />
             <p className="text-xs font-semibold text-white/80">
               {status === 'WAITING' ? 'Awaiting GPS Telemetry' : 'No Valid GPS Fix'}
             </p>
-            <p className="text-[11px] text-white/40 max-w-xs mt-0.5">
+            <p className="text-[11px] text-white/40 max-w-xs mt-0.5 font-mono">
               {status === 'WAITING'
-                ? 'Check that receiver ESP8266 is transmitting GPS packets.'
-                : 'GPS receiver is active. Satellite lock in progress.'}
+                ? 'Awaiting telemetry packets from ground station.'
+                : 'GPS receiver active. Acquiring satellite constellation lock.'}
             </p>
           </div>
         )}
 
         {/* Coordinate HUD Tag */}
-        <div className="absolute bottom-2 left-2 bg-black/85 backdrop-blur-md border border-white/[0.1] rounded-xl px-2.5 py-1 font-mono text-[10px] text-white/70 flex gap-3 shadow-lg">
-          <span>Lat: <strong className="text-[#c026d3] font-medium">{hasLock && latitude !== null ? latitude.toFixed(5) : 'N/A'}</strong></span>
-          <span>Lon: <strong className="text-[#c026d3] font-medium">{hasLock && longitude !== null ? longitude.toFixed(5) : 'N/A'}</strong></span>
+        <div className="absolute bottom-2 left-2 bg-black/90 border border-white/10 rounded-md px-2 py-0.5 font-mono text-[10px] text-slate-300 flex gap-3 shadow">
+          <span>LAT: <strong className="text-sky-400 font-medium">{hasLock && latitude !== null ? latitude.toFixed(5) : 'N/A'}</strong></span>
+          <span>LON: <strong className="text-sky-400 font-medium">{hasLock && longitude !== null ? longitude.toFixed(5) : 'N/A'}</strong></span>
         </div>
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-4 gap-2 pt-1 border-t border-white/[0.06] font-mono text-center text-xs">
-        <div className="bg-white/[0.04] p-2 rounded-xl border border-white/[0.06] backdrop-blur-md">
-          <p className="text-[10px] text-white/40 uppercase font-medium">Latitude</p>
-          <p className="font-semibold text-white truncate mt-0.5">{hasLock && latitude !== null ? `${latitude.toFixed(4)}°` : 'N/A'}</p>
+      <div className="grid grid-cols-4 gap-1.5 pt-1 border-t border-white/[0.06] font-mono text-center text-xs">
+        <div className="bg-[#111624] p-1.5 rounded-lg border border-white/[0.06]">
+          <p className="text-[9px] text-slate-400 uppercase tracking-wider font-medium">LATITUDE</p>
+          <p className="font-semibold text-slate-200 truncate mt-0.5 tabular-nums">{hasLock && latitude !== null ? `${latitude.toFixed(4)}°` : 'N/A'}</p>
         </div>
-        <div className="bg-white/[0.04] p-2 rounded-xl border border-white/[0.06] backdrop-blur-md">
-          <p className="text-[10px] text-white/40 uppercase font-medium">Longitude</p>
-          <p className="font-semibold text-white truncate mt-0.5">{hasLock && longitude !== null ? `${longitude.toFixed(4)}°` : 'N/A'}</p>
+        <div className="bg-[#111624] p-1.5 rounded-lg border border-white/[0.06]">
+          <p className="text-[9px] text-slate-400 uppercase tracking-wider font-medium">LONGITUDE</p>
+          <p className="font-semibold text-slate-200 truncate mt-0.5 tabular-nums">{hasLock && longitude !== null ? `${longitude.toFixed(4)}°` : 'N/A'}</p>
         </div>
-        <div className="bg-white/[0.04] p-2 rounded-xl border border-white/[0.06] backdrop-blur-md">
-          <p className="text-[10px] text-white/40 uppercase font-medium">Altitude</p>
-          <p className="font-semibold text-[#c026d3] truncate mt-0.5">{altitude !== null ? `${altitude.toFixed(1)} m` : 'N/A'}</p>
+        <div className="bg-[#111624] p-1.5 rounded-lg border border-white/[0.06]">
+          <p className="text-[9px] text-slate-400 uppercase tracking-wider font-medium">ALTITUDE</p>
+          <p className="font-semibold text-sky-300 truncate mt-0.5 tabular-nums">{altitude !== null ? `${altitude.toFixed(1)} m` : 'N/A'}</p>
         </div>
-        <div className="bg-white/[0.04] p-2 rounded-xl border border-white/[0.06] backdrop-blur-md">
-          <p className="text-[10px] text-white/40 uppercase font-medium">Speed</p>
-          <p className="font-semibold text-white truncate mt-0.5">{speed !== null ? `${speed.toFixed(1)} km/h` : 'N/A'}</p>
+        <div className="bg-[#111624] p-1.5 rounded-lg border border-white/[0.06]">
+          <p className="text-[9px] text-slate-400 uppercase tracking-wider font-medium">SPEED</p>
+          <p className="font-semibold text-emerald-400 truncate mt-0.5 tabular-nums">{speed !== null ? `${speed.toFixed(1)} km/h` : 'N/A'}</p>
         </div>
       </div>
     </div>
