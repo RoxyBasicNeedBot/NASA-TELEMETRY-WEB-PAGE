@@ -84,6 +84,7 @@ class TelemetryService {
   private reconnectAttempts = 0;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private staleTimer: ReturnType<typeof setTimeout> | null = null;
+  private heartbeatTimer: ReturnType<typeof setInterval> | null = null;
   private running = false;
 
   configure(options: {
@@ -110,6 +111,7 @@ class TelemetryService {
     this.running = false;
     this.clearReconnectTimer();
     this.clearStaleTimer();
+    this.clearHeartbeat();
     if (this.ws) {
       const ws = this.ws;
       this.ws = null;
@@ -143,6 +145,7 @@ class TelemetryService {
       this.reconnectAttempts = 0;
       this.setConnectionState('connected');
       this.resetStaleTimer();
+      this.startHeartbeat();
     };
 
     this.ws.onmessage = (event) => {
@@ -157,6 +160,7 @@ class TelemetryService {
       const detail = `Code ${event.code}${event.reason ? ': ' + event.reason : ''}`;
       this.setConnectionState('disconnected', detail);
       this.clearStaleTimer();
+      this.clearHeartbeat();
       if (this.running) this.scheduleReconnect();
     };
   }
@@ -276,6 +280,26 @@ class TelemetryService {
     if (this.staleTimer !== null) {
       clearTimeout(this.staleTimer);
       this.staleTimer = null;
+    }
+  }
+
+  private startHeartbeat(): void {
+    this.clearHeartbeat();
+    this.heartbeatTimer = setInterval(() => {
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        try {
+          this.ws.send(JSON.stringify({ type: 'heartbeat', timestamp: Date.now() }));
+        } catch {
+          // ignore
+        }
+      }
+    }, 2500);
+  }
+
+  private clearHeartbeat(): void {
+    if (this.heartbeatTimer !== null) {
+      clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = null;
     }
   }
 

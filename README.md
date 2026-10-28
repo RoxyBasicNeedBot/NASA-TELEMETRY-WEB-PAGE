@@ -64,6 +64,22 @@ SINGULARITY_Mission_Control/
    - Express REST API & SQLite database
    - Built-in real-time WebSocket telemetry stream (`wss://`) with live satellite simulation!
 
+### Option D: Deploy on Cloudflare Pages (1-Click Global Edge + Full Serverless API)
+1. In Cloudflare Dashboard, go to **Compute (Workers) > Workers & Pages** -> **Create application** -> **Pages**.
+2. Connect your GitHub repository `RoxyBasicNeedBot/NASA-TELEMETRY-WEB-PAGE`.
+3. Set build configuration:
+   - **Root directory:** `Frontend`
+   - **Framework preset:** `Vite`
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+4. Click **Save and Deploy**.
+5. Cloudflare Pages automatically serves the React UI **AND** runs the serverless edge functions inside `Frontend/functions/` (`/health`, `/ws` WebSockets, `/api/telemetry`, `/api/layouts`) globally on Cloudflare edge!
+
+### Option E: Deploy Standalone Cloudflare Worker (`cloudflare-worker/`)
+1. Open a terminal in `cloudflare-worker/`.
+2. Run `npm install` and `npx wrangler deploy`.
+3. Your API & WebSocket Gateway is immediately live at `https://singularity-telemetry-worker.<subdomain>.workers.dev`.
+
 ---
 
 ## 🛠️ How to Update and Modify Code in Future

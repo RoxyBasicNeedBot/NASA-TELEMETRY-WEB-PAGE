@@ -1,0 +1,15 @@
+name = "singularity-telemetry-worker"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+
+# Optional: To enable Cloudflare Serverless D1 SQLite Database,
+# create a D1 database with: npx wrangler d1 create singularity-db
+# and uncomment the lines below:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "singularity-db"
+# database_id = "<your-d1-database-id>"
