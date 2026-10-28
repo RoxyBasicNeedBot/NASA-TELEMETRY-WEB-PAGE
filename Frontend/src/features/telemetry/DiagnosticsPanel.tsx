@@ -6,8 +6,8 @@ export function DiagnosticsPanel() {
   const diag = useTelemetryStore(s => s.diagnostics);
 
   return (
-    <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl overflow-hidden font-mono">
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/[0.08] bg-[#090c14]">
+    <div className="bg-[#08080a] border border-white/10 rounded-lg overflow-hidden font-mono">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10 bg-[#0c0c0e]">
         <Terminal size={14} className="text-sky-400" />
         <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Avionics Diagnostics & Packet Bus</h3>
         <div className="ml-auto flex items-center gap-3 text-[11px] text-white/50">

@@ -80,21 +80,21 @@ export function SensorsPage() {
         <div className="flex gap-2">
           <button
             onClick={refresh}
-            className="p-1.5 text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] rounded-lg transition-colors"
+            className="p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/10 rounded transition-colors"
             title="Scan bus"
           >
             <RefreshCw size={14} />
           </button>
           <button
             onClick={() => setShowWizard(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-zinc-200 text-black rounded text-xs font-mono uppercase tracking-wider font-semibold transition-colors"
           >
             <RefreshCw size={12} /> Reconfigure Hardware
           </button>
         </div>
       </div>
 
-      <div className="space-y-2.5">
+      <div className="space-y-2">
         {sensors.map(sensor => {
           const Icon = SENSOR_ICONS[sensor.sensorId] ?? Cpu;
           const isExpanded = expandedId === sensor.sensorId;
@@ -103,7 +103,7 @@ export function SensorsPage() {
             : null;
 
           return (
-            <div key={sensor.sensorId} className="bg-[#0d111c] border border-white/[0.08] rounded-xl overflow-hidden">
+            <div key={sensor.sensorId} className="bg-[#08080a] border border-white/10 rounded-lg overflow-hidden">
               <div
                 className="flex items-center gap-3.5 px-4 py-3 cursor-pointer hover:bg-white/[0.02] transition-colors"
                 onClick={() => setExpandedId(isExpanded ? null : sensor.sensorId)}

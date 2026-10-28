@@ -91,17 +91,17 @@ export function DataHistoryPage() {
       </div>
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 bg-[#0d111c] border border-white/[0.08] rounded-xl p-3">
+      <div className="flex flex-wrap items-center gap-3 bg-[#08080a] border border-white/10 rounded-lg p-3">
         {/* Field selector */}
         <div>
-          <label className="block text-[10px] font-mono uppercase tracking-wider text-white/50 mb-1">Channel</label>
+          <label className="block text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1">Channel</label>
           <select
             value={selectedField}
             onChange={e => setSelectedField(e.target.value)}
-            className="bg-[#131929] border border-white/[0.1] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-sky-500"
+            className="bg-black border border-white/10 rounded px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-white/30"
           >
             {fields.map(({ sensorId, fieldDef }) => (
-              <option key={`${sensorId}.${fieldDef.fieldKey}`} value={`${sensorId}.${fieldDef.fieldKey}`} className="bg-[#0d111c] text-white">
+              <option key={`${sensorId}.${fieldDef.fieldKey}`} value={`${sensorId}.${fieldDef.fieldKey}`} className="bg-black text-white">
                 {sensorRegistry.getSensor(sensorId)?.displayName} · {fieldDef.label}
               </option>
             ))}
@@ -110,13 +110,13 @@ export function DataHistoryPage() {
 
         {/* Presets */}
         <div>
-          <label className="block text-[10px] font-mono uppercase tracking-wider text-white/50 mb-1">Time Window</label>
+          <label className="block text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1">Time Window</label>
           <div className="flex gap-1.5">
             {PRESETS.map(p => (
               <button
                 key={p.label}
                 onClick={() => { setFrom(p.from()); setTo(Date.now()); }}
-                className="px-2.5 py-1.5 text-xs rounded-lg bg-[#131929] hover:bg-[#1a2236] border border-white/[0.08] text-white/70 hover:text-white transition-colors font-mono"
+                className="px-2.5 py-1.5 text-xs rounded bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white transition-colors font-mono"
               >
                 {p.label}
               </button>
@@ -127,14 +127,14 @@ export function DataHistoryPage() {
         <div className="flex gap-2 ml-auto">
           <button
             onClick={fetchHistory}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#131929] hover:bg-[#1a2236] border border-white/[0.1] text-white/80 hover:text-white rounded-lg text-xs font-mono uppercase tracking-wider transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white rounded text-xs font-mono uppercase tracking-wider transition-colors"
           >
             <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Query
           </button>
           <button
             onClick={handleExportCSV}
             disabled={rows.length === 0}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors disabled:opacity-40"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-zinc-200 text-black rounded text-xs font-mono uppercase tracking-wider font-semibold transition-colors disabled:opacity-40"
           >
             <Download size={12} /> Export CSV
           </button>
@@ -161,8 +161,8 @@ export function DataHistoryPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 text-[10px] text-white/50 px-4 py-2 border-b border-white/[0.08] bg-[#090c14] uppercase tracking-wider font-mono">
+      <div className="bg-[#08080a] border border-white/10 rounded-lg overflow-hidden">
+        <div className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 text-[10px] text-zinc-400 px-4 py-2 border-b border-white/10 bg-[#0c0c0e] uppercase tracking-wider font-mono">
           <span className="w-28">Timestamp</span>
           <span className="w-20 ml-4">Packet#</span>
           <span className="ml-4">Value</span>

@@ -54,45 +54,45 @@ export function SettingsPage() {
       </div>
 
       {/* Connection */}
-      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl p-4 space-y-3">
+      <div className="bg-[#08080a] border border-white/10 rounded-lg p-4 space-y-3">
         <div className="flex items-center gap-2">
-          <Wifi size={14} className="text-sky-400" />
-          <h2 className="text-xs uppercase font-semibold tracking-wider text-sky-400">Telemetry Uplink / WebSocket</h2>
+          <Wifi size={14} className="text-white" />
+          <h2 className="text-xs uppercase font-semibold tracking-wider text-white">Telemetry Uplink / WebSocket</h2>
         </div>
         <div className="space-y-3">
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Mission Identifier</label>
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Mission Identifier</label>
             <input
               value={missionName}
               onChange={e => setMissionName(e.target.value)}
-              className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500"
+              className="w-full bg-black border border-white/10 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Transponder Call Sign / Device ID</label>
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Transponder Call Sign / Device ID</label>
             <input
               value={deviceId}
               onChange={e => setDeviceId(e.target.value)}
-              className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500"
+              className="w-full bg-black border border-white/10 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">WebSocket Gateway Endpoint</label>
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">WebSocket Gateway Endpoint</label>
             <input
               value={wsUrl}
               onChange={e => setWsUrl(e.target.value)}
-              className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500"
+              className="w-full bg-black border border-white/10 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
             />
-            <p className="text-[10px] text-white/30 mt-1">Default local telemetry bridge: ws://localhost:8081</p>
+            <p className="text-[10px] text-zinc-500 mt-1">Default local telemetry bridge: ws://localhost:8081</p>
           </div>
         </div>
         <div className="pt-2">
           <button
             onClick={handleSave}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded text-xs font-semibold uppercase tracking-wider transition-colors ${
               saved
                 ? 'bg-emerald-600 text-white'
-                : 'bg-sky-600 hover:bg-sky-500 text-white'
+                : 'bg-white hover:bg-zinc-200 text-black'
             }`}
           >
             {saved ? <Check size={14} /> : <RefreshCw size={14} className={saved ? 'animate-spin' : ''} />}
@@ -102,8 +102,8 @@ export function SettingsPage() {
       </div>
 
       {/* Mission configuration */}
-      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl p-4 space-y-3">
-        <h2 className="text-xs uppercase font-semibold tracking-wider text-sky-400">Payload Configuration State</h2>
+      <div className="bg-[#08080a] border border-white/10 rounded-lg p-4 space-y-3">
+        <h2 className="text-xs uppercase font-semibold tracking-wider text-white">Payload Configuration State</h2>
         <div className="grid grid-cols-2 gap-2 text-xs">
           {[
             ['Setup Verified', mission.isSetupComplete ? 'YES' : 'NO'],
@@ -112,8 +112,8 @@ export function SettingsPage() {
             ['Initialized At', new Date(mission.createdAt).toLocaleDateString()],
             ['Last Synchronized', new Date(mission.updatedAt).toLocaleTimeString()],
           ].map(([k, v]) => (
-            <div key={k} className="bg-[#131929] border border-white/[0.06] rounded-lg p-2">
-              <p className="text-white/40 text-[10px]">{k}</p>
+            <div key={k} className="bg-black border border-white/10 rounded p-2">
+              <p className="text-zinc-500 text-[10px]">{k}</p>
               <p className="text-white text-xs mt-0.5 truncate">{v}</p>
             </div>
           ))}
@@ -121,7 +121,7 @@ export function SettingsPage() {
         <div className="pt-1">
           <button
             onClick={handleReconfigureMission}
-            className="flex items-center gap-2 px-3 py-1.5 border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 rounded-lg text-xs uppercase tracking-wider transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 rounded text-xs uppercase tracking-wider transition-colors"
           >
             <RotateCcw size={12} /> Launch Mission Hardware Wizard
           </button>
@@ -129,15 +129,15 @@ export function SettingsPage() {
       </div>
 
       {/* Dashboard Layout */}
-      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl p-4 space-y-2.5">
-        <h2 className="text-xs uppercase font-semibold tracking-wider text-sky-400">Flight Console Grid</h2>
+      <div className="bg-[#08080a] border border-white/10 rounded-lg p-4 space-y-2.5">
+        <h2 className="text-xs uppercase font-semibold tracking-wider text-white">Flight Console Grid</h2>
         <button
           onClick={() => resetLayout(mission.configuredSensorIds)}
-          className="flex items-center gap-2 px-3 py-1.5 border border-white/[0.1] bg-[#131929] hover:bg-[#1a2236] text-white/80 hover:text-white rounded-lg text-xs uppercase tracking-wider transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 border border-white/10 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded text-xs uppercase tracking-wider transition-colors"
         >
           <RotateCcw size={12} /> Reset to Default Grid
         </button>
-        <p className="text-[11px] text-white/40">Resets widget placements to default aerospace arrangement. Historical storage remains intact.</p>
+        <p className="text-[11px] text-zinc-500">Resets widget placements to default aerospace arrangement. Historical storage remains intact.</p>
       </div>
 
       {/* Danger zone */}

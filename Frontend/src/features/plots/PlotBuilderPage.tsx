@@ -98,31 +98,31 @@ export function PlotBuilderPage() {
   const canAdd = selectedFields.length > 0 || chartType === 'cubesat' || chartType === 'map';
 
   return (
-    <div className="h-full flex bg-[#07090e]">
+    <div className="h-full flex bg-black">
       {/* Left panel — field picker + config */}
-      <div className="w-80 shrink-0 border-r border-white/[0.08] flex flex-col overflow-hidden bg-[#0a0d17]">
-        <div className="p-4 border-b border-white/[0.08]">
+      <div className="w-80 shrink-0 border-r border-white/10 flex flex-col overflow-hidden bg-black">
+        <div className="p-4 border-b border-white/10">
           <h1 className="text-sm font-semibold tracking-wide uppercase font-mono text-white flex items-center gap-2">
-            <BarChart2 size={16} className="text-sky-400" /> Plot Designer
+            <BarChart2 size={16} className="text-white" /> Plot Designer
           </h1>
-          <p className="text-white/40 text-[11px] font-mono mt-0.5">Author custom telemetry telemetry views</p>
+          <p className="text-zinc-500 text-[11px] font-mono mt-0.5">Author custom telemetry telemetry views</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 font-mono">
           {/* Title */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Plot Title</label>
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Plot Title</label>
             <input
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Auto-inferred..."
-              className="w-full bg-[#131929] border border-white/[0.1] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500"
+              className="w-full bg-[#0d0d0f] border border-white/10 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
             />
           </div>
 
           {/* Chart type */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Visualization Mode</label>
+            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Visualization Mode</label>
             <div className="grid grid-cols-2 gap-1.5">
               {CHART_TYPES.map(ct => (
                 <button
@@ -133,10 +133,10 @@ export function PlotBuilderPage() {
                       setSelectedFields([selectedFields[0]]);
                     }
                   }}
-                  className={`text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors border ${
+                  className={`text-left px-2.5 py-1.5 rounded text-xs transition-colors border ${
                     chartType === ct.value
-                      ? 'bg-sky-500/20 text-sky-300 border-sky-400/40 font-semibold'
-                      : 'text-white/60 bg-[#131929] border-white/[0.06] hover:text-white hover:bg-[#1a2236]'
+                      ? 'bg-white text-black border-white font-semibold'
+                      : 'text-zinc-400 bg-zinc-900 border-white/[0.08] hover:text-white hover:bg-zinc-800'
                   }`}
                 >
                   {ct.label}
@@ -207,16 +207,16 @@ export function PlotBuilderPage() {
         </div>
 
         {/* Add to dashboard */}
-        <div className="p-3 border-t border-white/[0.08] bg-[#0d111c]">
+        <div className="p-3 border-t border-white/10 bg-black">
           <button
             onClick={handleAddToDashboard}
             disabled={!canAdd}
-            className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors ${
+            className={`w-full flex items-center justify-center gap-2 py-2 rounded text-xs font-mono uppercase tracking-wider font-semibold transition-colors ${
               added
                 ? 'bg-emerald-600 text-white'
                 : canAdd
-                ? 'bg-sky-600 hover:bg-sky-500 text-white'
-                : 'bg-white/[0.04] text-white/30 cursor-not-allowed'
+                ? 'bg-white hover:bg-zinc-200 text-black'
+                : 'bg-zinc-900 text-zinc-600 cursor-not-allowed border border-white/5'
             }`}
           >
             {added ? <><Check size={14} /> Added to Console</> : <><Plus size={14} /> Commit to Dashboard</>}
@@ -225,10 +225,10 @@ export function PlotBuilderPage() {
       </div>
 
       {/* Right panel — live preview */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#07090e]">
-        <div className="px-4 py-2.5 border-b border-white/[0.08] flex items-center gap-2 bg-[#0d111c]">
-          <Play size={13} className="text-sky-400" />
-          <span className="text-xs text-white/80 font-mono uppercase tracking-wider font-medium">Telemetry Monitor Preview</span>
+      <div className="flex-1 flex flex-col min-w-0 bg-black">
+        <div className="px-4 py-2 border-b border-white/10 flex items-center gap-2 bg-black">
+          <Play size={13} className="text-white" />
+          <span className="text-xs text-zinc-300 font-mono uppercase tracking-wider font-medium">Telemetry Monitor Preview</span>
           {selectedFields.length > 0 && (
             <div className="flex gap-1.5 ml-3">
               {selectedFields.map((f, i) => {
@@ -236,7 +236,7 @@ export function PlotBuilderPage() {
                 return (
                   <span
                     key={f}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#131929] border border-white/[0.08] text-white/80"
+                    className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-white/10 text-white"
                     style={{ borderLeft: `3px solid ${COLORS[i % COLORS.length]}` }}
                   >
                     {fd?.label ?? f}
@@ -248,34 +248,34 @@ export function PlotBuilderPage() {
         </div>
         <div className="flex-1 p-4 overflow-auto">
           {selectedFields.length === 0 && chartType !== 'cubesat' && chartType !== 'map' ? (
-            <div className="h-full flex flex-col items-center justify-center text-white/30 gap-2 font-mono">
-              <BarChart2 size={36} className="opacity-20 text-sky-400" />
+            <div className="h-full flex flex-col items-center justify-center text-zinc-600 gap-2 font-mono">
+              <BarChart2 size={36} className="opacity-20 text-white" />
               <p className="text-xs">Select telemetry channel from the side panel</p>
             </div>
           ) : (
             <div className="h-full">
               {chartType === 'cubesat' && (
-                <div className="h-full min-h-[350px] bg-[#0d111c] border border-white/[0.08] rounded-xl p-1">
+                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-1">
                   <CubeSatViewer title={title || 'CubeSat Attitude 3D'} />
                 </div>
               )}
               {chartType === 'map' && (
-                <div className="h-full min-h-[350px] bg-[#0d111c] border border-white/[0.08] rounded-xl p-1">
+                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-1">
                   <GpsMapWidget title={title || 'GPS Ground Track Map'} />
                 </div>
               )}
               {chartType === 'value' && (
-                <div className="max-w-xs h-40 bg-[#0d111c] border border-white/[0.08] rounded-xl">
+                <div className="max-w-xs h-40 bg-[#08080a] border border-white/10 rounded-xl">
                   <LiveValueCard fieldRef={selectedFields[0]} title={title} />
                 </div>
               )}
               {chartType === 'gauge' && (
-                <div className="max-w-xs h-64 bg-[#0d111c] border border-white/[0.08] rounded-xl">
+                <div className="max-w-xs h-64 bg-[#08080a] border border-white/10 rounded-xl">
                   <GaugeWidget fieldRef={selectedFields[0]} title={title} />
                 </div>
               )}
               {['timeseries', 'area', 'bar'].includes(chartType) && (
-                <div className="h-full min-h-[350px] bg-[#0d111c] border border-white/[0.08] rounded-xl p-2">
+                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-2">
                   <TimeSeriesChart
                     series={series}
                     title={title}

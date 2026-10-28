@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   AEROSPACE MISSION CONTROL DESIGN SYSTEM
-   High-performance, low-latency, precision instrumentation theme.
-   Optimized for 60+ FPS rendering with zero backdrop-filter GPU bottlenecks.
+   AMOLED PURE BLACK AEROSPACE DESIGN SYSTEM
+   True OLED (#000000), Linear/OpenAI/Apple precision styling, zero lag.
    ───────────────────────────────────────────────────────────────────────────── */
 
 *, *::before, *::after {
@@ -11,13 +10,14 @@
 }
 
 :root {
-  --color-void: #07090e;
-  --color-surface-base: #0b0e17;
-  --color-surface-panel: #101422;
-  --color-surface-elevated: #161c2e;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-subtle: rgba(255, 255, 255, 0.04);
-  --color-border-highlight: rgba(56, 189, 248, 0.35);
+  --color-void: #000000;
+  --color-surface-base: #000000;
+  --color-surface-panel: #070707;
+  --color-surface-card: #09090b;
+  --color-surface-elevated: #121214;
+  --color-border: rgba(255, 255, 255, 0.09);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-highlight: rgba(56, 189, 248, 0.4);
 
   --color-telemetry-cyan: #38bdf8;
   --color-telemetry-emerald: #10b981;
@@ -30,54 +30,49 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--color-void);
-  /* Precision technical grid — zero repaint cost, 60 FPS scroll */
+  background-color: #000000;
+  /* AMOLED fine engineering coordinate grid */
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    radial-gradient(circle 900px at 50% -15%, rgba(14, 165, 233, 0.08), transparent 70%);
-  background-size: 32px 32px, 32px 32px, 100% 100%;
-  color: #e2e8f0;
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: #ededed;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Precision Flight Panels (Replaces GPU-lagging liquid-glass)
+   AMOLED Flight Panels (Crisp 1px borders, subtle inner highlight)
    ───────────────────────────────────────────────────────────────────────────── */
 
 .flight-panel,
 .liquid-glass-card {
-  background: var(--color-surface-panel);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+  background: #08080a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
   box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    0 4px 20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .flight-panel:hover,
 .liquid-glass-card:hover {
-  border-color: rgba(56, 189, 248, 0.25);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .liquid-glass {
-  background: var(--color-surface-panel);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: #070707;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Inputs & Form Elements */
+/* Precision Inputs */
 .liquid-glass-input {
-  background: rgba(16, 20, 34, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  color: #f8fafc;
+  background: #0d0d0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #ffffff;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -85,30 +80,29 @@ html, body, #root {
 .liquid-glass-input:focus {
   outline: none;
   border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 0 1px #38bdf8;
 }
 
-/* Primary Aerospace Buttons */
+/* Primary Aerospace Buttons (Linear/OpenAI style) */
 .liquid-glass-btn-primary {
-  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
-  border: 1px solid #38bdf8;
-  border-radius: 8px;
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  color: #000000;
   font-weight: 600;
   letter-spacing: -0.01em;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: all 0.15s ease;
 }
 
 .liquid-glass-btn-primary:hover {
-  background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+  background: #e5e5e5;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
 }
 
 /* Headings */
 .heading-singularity,
 .heading-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -116,41 +110,28 @@ html, body, #root {
   letter-spacing: -0.02em;
 }
 
-/* Keyframes & Subtle Motion */
-@keyframes telemetryPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.95); }
+/* 3D Orbit Inspect Cue Pill */
+.inspect-cue-pill {
+  animation: cueFloat 3s ease-in-out infinite;
 }
 
-.animate-accretion-spin {
-  animation: spin 30s linear infinite;
+@keyframes cueFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
 }
 
-.animate-fade-up {
-  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-scale-in {
-  animation: fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Scrollbars */
+/* Custom Scrollbar for AMOLED */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #080a10;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #27272a;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #3f3f46;
 }

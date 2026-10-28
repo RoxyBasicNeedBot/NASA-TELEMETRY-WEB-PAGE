@@ -109,18 +109,18 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
   };
 
   return (
-    <div className="h-full flex flex-col rounded-xl overflow-hidden group bg-[#0d111c] border border-white/[0.08] hover:border-sky-500/30 shadow-md shadow-black/50 transition-colors duration-150">
+    <div className="h-full flex flex-col rounded-lg overflow-hidden group bg-[#08080a] border border-white/10 hover:border-white/20 shadow-2xl transition-colors duration-150">
       {/* Widget title bar */}
-      <div className={`widget-drag-handle flex items-center justify-between px-3 py-2 border-b border-white/[0.06] shrink-0 select-none bg-[#111624] ${isEditing ? 'cursor-grab active:cursor-grabbing bg-sky-500/10' : ''}`}>
-        <span className="text-slate-200 text-xs font-medium tracking-tight truncate flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-sm bg-sky-400 shrink-0 opacity-80" />
-          <span className="font-mono text-[11px] uppercase tracking-wider text-slate-300">{widget.title}</span>
+      <div className={`widget-drag-handle flex items-center justify-between px-3 py-1.5 border-b border-white/[0.08] shrink-0 select-none bg-[#0c0c0e] ${isEditing ? 'cursor-grab active:cursor-grabbing bg-white/10' : ''}`}>
+        <span className="text-zinc-200 text-xs font-medium tracking-tight truncate flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-sm bg-white shrink-0 opacity-80" />
+          <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-300">{widget.title}</span>
         </span>
         {isEditing && (
           <div className="flex items-center gap-1 ml-2">
             <button
               onClick={() => setShowEdit(true)}
-              className="p-1 text-slate-400 hover:text-sky-300 hover:bg-white/[0.06] rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Settings"
             >
@@ -128,7 +128,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
             </button>
             <button
               onClick={() => duplicateWidget(widget.id)}
-              className="p-1 text-slate-400 hover:text-white hover:bg-white/[0.06] rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Duplicate"
             >
@@ -136,7 +136,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
             </button>
             <button
               onClick={() => removeWidget(widget.id)}
-              className="p-1 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Remove"
             >
@@ -147,7 +147,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
       </div>
 
       {/* Widget content */}
-      <div className="flex-1 min-h-0 overflow-hidden bg-[#0d111c]">
+      <div className="flex-1 min-h-0 overflow-hidden bg-black">
         {renderContent()}
       </div>
 

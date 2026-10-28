@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Satellite, Wifi, Loader2, CheckCircle2, XCircle, ChevronRight, ChevronLeft, Thermometer, Compass, Gauge, MapPin, Zap, Check } from 'lucide-react';
+import { OrbitraLogo } from '../../components/common/OrbitraLogo';
 import { useMissionStore } from '../../stores/missionStore';
 import { useDashboardStore } from '../../stores/dashboardStore';
 import { sensorRegistry } from '../sensors/registry';
@@ -187,7 +188,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
   const stepIdx = steps.indexOf(step);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#07090e] font-mono">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-black font-mono">
       <div className="w-full max-w-xl">
         {/* Step Progress */}
         <div className="mb-4 flex items-center gap-2 px-1">
@@ -196,10 +197,10 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
               <div
                 className={`w-6 h-6 rounded flex items-center justify-center text-xs font-semibold border transition-colors ${
                   i < stepIdx
-                    ? 'bg-sky-600 border-sky-400 text-white'
+                    ? 'bg-white border-white text-black'
                     : i === stepIdx
-                    ? 'border-sky-400 text-sky-300 bg-sky-500/20'
-                    : 'border-white/10 text-white/30 bg-[#0d111c]'
+                    ? 'border-white text-white bg-white/10'
+                    : 'border-white/10 text-white/30 bg-black'
                 }`}
               >
                 {i + 1}
@@ -207,7 +208,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
               {i < steps.length - 1 && (
                 <div
                   className={`flex-1 h-0.5 rounded transition-colors ${
-                    i < stepIdx ? 'bg-sky-500' : 'bg-white/10'
+                    i < stepIdx ? 'bg-white' : 'bg-white/10'
                   }`}
                 />
               )}
@@ -216,29 +217,27 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
         </div>
 
         {/* Main Panel */}
-        <div className="rounded-xl p-6 bg-[#0d111c] border border-white/[0.12] shadow-2xl">
+        <div className="rounded-xl p-6 bg-[#08080a] border border-white/10 shadow-2xl">
           {/* Welcome */}
           {step === 'welcome' && (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <div className="w-14 h-14 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center">
-                  <Satellite size={30} className="text-sky-400" />
-                </div>
+                <OrbitraLogo size={48} animated={true} />
               </div>
               <div>
-                <h1 className="text-xl font-bold tracking-wide uppercase text-white">ORBITRA GROUND STATION</h1>
-                <p className="text-white/40 mt-0.5 text-xs">Aerospace Telemetry Link & Payload Control</p>
+                <h1 className="text-xl font-bold tracking-widest uppercase text-white">ORBITRA GROUND STATION</h1>
+                <p className="text-zinc-400 mt-0.5 text-xs">Aerospace Telemetry Link & Payload Control</p>
               </div>
-              <div className="bg-[#090c14] border border-white/[0.08] rounded-lg p-4 text-left space-y-2">
+              <div className="bg-black border border-white/10 rounded-lg p-4 text-left space-y-2">
                 <h2 className="text-xs font-semibold uppercase text-sky-400 tracking-wider">Mission Commissioning Sequence</h2>
-                <p className="text-white/60 text-xs leading-relaxed font-sans">
+                <p className="text-zinc-400 text-xs leading-relaxed font-sans">
                   Configure avionics transponder call sign, WebSocket telemetry downlink endpoint, and select the active payload sensors.
                 </p>
               </div>
               <div className="pt-2">
                 <button
                   onClick={() => setStep('connection')}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors shadow"
                 >
                   Initiate Setup Sequence <ChevronRight size={14} />
                 </button>
@@ -349,16 +348,16 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
                   );
                 })}
               </div>
-              <div className="flex gap-2.5 pt-3 border-t border-white/[0.08]">
+              <div className="flex gap-2.5 pt-3 border-t border-white/10">
                 <button
                   onClick={() => setStep('connection')}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-[#131929] hover:bg-[#1a2236] border border-white/[0.1] text-white/70 hover:text-white rounded-lg text-xs uppercase tracking-wider transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white rounded-lg text-xs uppercase tracking-wider transition-colors"
                 >
                   <ChevronLeft size={13} /> Back
                 </button>
                 <button
                   onClick={() => setStep('confirm')}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors"
                 >
                   Review Configuration <ChevronRight size={13} />
                 </button>
@@ -371,26 +370,26 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
             <div className="space-y-4">
               <div>
                 <h2 className="text-sm font-semibold uppercase text-white tracking-wider">Step 4: Mission Pre-Flight Review</h2>
-                <p className="text-white/40 text-xs mt-0.5">Verify parameters before activating flight control dashboard</p>
+                <p className="text-zinc-400 text-xs mt-0.5">Verify parameters before activating flight control dashboard</p>
               </div>
-              <div className="space-y-2 bg-[#090c14] border border-white/[0.08] rounded-lg p-3 text-xs">
+              <div className="space-y-2 bg-black border border-white/10 rounded-lg p-3 text-xs">
                 {[
                   ['Mission Identifier', missionName],
                   ['Device Call Sign', deviceId],
                   ['Downlink Gateway', wsUrl],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between py-1 border-b border-white/[0.04] last:border-0">
-                    <span className="text-white/40">{label}</span>
+                    <span className="text-zinc-400">{label}</span>
                     <span className="text-white font-semibold">{value}</span>
                   </div>
                 ))}
                 <div className="pt-2">
-                  <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">Payload Adapters</p>
+                  <p className="text-zinc-400 text-[10px] uppercase tracking-wider mb-1">Payload Adapters</p>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedSensors.map(id => {
                       const card = SENSOR_CARDS.find(c => c.id === id);
                       return card ? (
-                        <span key={id} className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-[#131929] border border-white/[0.1] text-white">
+                        <span key={id} className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-zinc-900 border border-white/10 text-white">
                           <card.icon size={11} className={card.iconColor} />
                           <span>{card.name}</span>
                         </span>
@@ -399,18 +398,18 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2.5 pt-3 border-t border-white/[0.08]">
+              <div className="flex gap-2.5 pt-3 border-t border-white/10">
                 <button
                   onClick={() => setStep('sensors')}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-[#131929] hover:bg-[#1a2236] border border-white/[0.1] text-white/70 hover:text-white rounded-lg text-xs uppercase tracking-wider transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white rounded-lg text-xs uppercase tracking-wider transition-colors"
                 >
                   <ChevronLeft size={13} /> Back
                 </button>
                 <button
                   onClick={handleComplete}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs uppercase tracking-wider font-semibold transition-colors"
                 >
-                  <Satellite size={14} /> Launch Flight Dashboard
+                  <OrbitraLogo size={14} /> Launch Flight Dashboard
                 </button>
               </div>
             </div>

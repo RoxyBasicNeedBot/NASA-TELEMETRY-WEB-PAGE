@@ -244,10 +244,10 @@ export function TimeSeriesChart({
       <div className="flex items-center justify-between px-3.5 pt-2 pb-1 shrink-0">
         <div className="flex items-center gap-1.5 flex-wrap">
           {series.map((s, i) => (
-            <div key={s.fieldRef} className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#111624] border border-white/[0.08]">
+            <div key={s.fieldRef} className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-black border border-white/10">
               <div className="w-2 h-1 rounded-sm" style={{ background: s.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length] }} />
-              <span className="text-slate-300 text-[11px] font-medium font-mono">{s.label ?? sensorRegistry.getField(s.fieldRef)?.label ?? s.fieldRef}</span>
-              <span className="text-slate-500 text-[10px] font-mono">{sensorRegistry.getField(s.fieldRef)?.unit}</span>
+              <span className="text-zinc-200 text-[11px] font-medium font-mono">{s.label ?? sensorRegistry.getField(s.fieldRef)?.label ?? s.fieldRef}</span>
+              <span className="text-zinc-500 text-[10px] font-mono">{sensorRegistry.getField(s.fieldRef)?.unit}</span>
             </div>
           ))}
         </div>

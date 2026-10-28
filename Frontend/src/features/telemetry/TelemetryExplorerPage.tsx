@@ -22,8 +22,8 @@ export function TelemetryExplorerPage() {
       </div>
 
       {/* Fields table */}
-      <div className="bg-[#0d111c] border border-white/[0.08] rounded-xl overflow-hidden font-mono">
-        <div className="grid grid-cols-[1.5fr_1fr_auto_auto_auto] gap-0 text-[10px] text-white/50 px-4 py-2 border-b border-white/[0.08] bg-[#090c14] uppercase tracking-wider">
+      <div className="bg-[#08080a] border border-white/10 rounded-lg overflow-hidden font-mono">
+        <div className="grid grid-cols-[1.5fr_1fr_auto_auto_auto] gap-0 text-[10px] text-zinc-400 px-4 py-2 border-b border-white/10 bg-[#0c0c0e] uppercase tracking-wider">
           <span>Payload · Channel</span>
           <span>Sample Value</span>
           <span className="w-20">Unit</span>

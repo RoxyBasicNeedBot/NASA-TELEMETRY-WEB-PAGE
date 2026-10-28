@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Sliders, Check } from 'lucide-react';
+import { OrbitraLogo } from '../../components/common/OrbitraLogo';
 import type { WidgetConfig, TimeRange } from '../../types/telemetry';
 import { useDashboardStore } from '../../stores/dashboardStore';
 import { sensorRegistry } from '../sensors/registry';
@@ -35,26 +36,26 @@ export function WidgetEditModal({ widget, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 animate-scale-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 animate-scale-in"
       onClick={onClose}
     >
       <div
-        className="relative overflow-hidden rounded-xl p-5 w-full max-w-md bg-[#0d111c] border border-white/[0.12] shadow-2xl text-white select-none transition-all"
+        className="relative overflow-hidden rounded-xl p-5 w-full max-w-md bg-[#08080a] border border-white/10 shadow-2xl text-white select-none transition-all"
         onClick={e => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/[0.08]">
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
           <div className="flex items-center gap-2">
-            <Sliders size={16} className="text-sky-400" />
-            <h3 className="text-white font-semibold text-sm tracking-wide uppercase font-mono">
+            <OrbitraLogo size={18} />
+            <h3 className="text-white font-semibold text-xs tracking-wide uppercase font-mono">
               Configure Widget
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <X size={16} />
+            <X size={15} />
           </button>
         </div>
 
@@ -159,16 +160,16 @@ export function WidgetEditModal({ widget, onClose }: Props) {
         </div>
 
         {/* Footer Actions */}
-        <div className="flex gap-2.5 mt-5 pt-4 border-t border-white/[0.08]">
+        <div className="flex gap-2.5 mt-5 pt-4 border-t border-white/10">
           <button
             onClick={onClose}
-            className="flex-1 py-2 border border-white/[0.1] bg-[#131929] hover:bg-[#1a2236] text-white/70 hover:text-white rounded-lg text-xs font-mono uppercase tracking-wider transition-colors"
+            className="flex-1 py-2 border border-white/10 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-lg text-xs font-mono uppercase tracking-wider transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+            className="flex-1 py-2 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs font-mono uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm"
           >
             <Check size={14} />
             Save Changes
