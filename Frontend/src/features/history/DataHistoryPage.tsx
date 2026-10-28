@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Database, Download, RefreshCw } from 'lucide-react';
 import { format, subHours, subMinutes } from 'date-fns';
 import { sensorRegistry } from '../sensors/registry';
@@ -7,7 +7,12 @@ import { sensorRegistry } from '../sensors/registry';
 // Data History Page â€” Black Hole Singularity + Apple Liquid Glass Table
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-const BACKEND = 'http://localhost:3001';
+const BACKEND =
+  typeof window !== 'undefined' &&
+  window.location.hostname !== 'localhost' &&
+  window.location.hostname !== '127.0.0.1'
+    ? window.location.origin
+    : 'http://localhost:3001';
 
 interface HistoryRow {
   id: number;

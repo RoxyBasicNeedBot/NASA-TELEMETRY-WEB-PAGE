@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { MissionConfig } from '../types/telemetry';
 
@@ -7,10 +7,20 @@ import type { MissionConfig } from '../types/telemetry';
 // Holds all mission configuration set during setup wizard.
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+export function getDefaultWsUrl(): string {
+  if (typeof window !== 'undefined' && window.location) {
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      return `${protocol}//${window.location.host}`;
+    }
+  }
+  return 'ws://localhost:8081';
+}
+
 const DEFAULT_MISSION: MissionConfig = {
   missionName: 'VYOMAASTRA',
   deviceId: 'esp8266-rx',
-  wsUrl: 'ws://localhost:8081',
+  wsUrl: getDefaultWsUrl(),
   configuredSensorIds: ['dht11'],
   isSetupComplete: false,
   setupVersion: 1,

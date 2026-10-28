@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { useTelemetryStore } from '../stores/telemetryStore';
 import { sensorRegistry } from '../features/sensors/registry';
 import type { NormalizedPacket, ConnectionState } from '../types/telemetry';
@@ -51,7 +51,29 @@ const STALE_TIMEOUT_MS = 10_000;
 const BACKOFF_BASE_MS = 1_000;
 const BACKOFF_MAX_MS = 30_000;
 const BACKOFF_MULTIPLIER = 1.5;
-const BACKEND_URL = 'http://localhost:3001';
+
+function getBackendUrl(): string {
+  if (typeof window !== 'undefined' && window.location) {
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      return window.location.origin;
+    }
+  }
+  return 'http://localhost:3001';
+}
+
+function resolveWsUrl(url: string): string {
+  if (typeof window !== 'undefined' && window.location) {
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      if (!url || url.includes('localhost') || url.includes('127.0.0.1')) {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        return `${protocol}//${window.location.host}`;
+      }
+    }
+  }
+  return url || 'ws://localhost:8081';
+}
+
+const BACKEND_URL = getBackendUrl();
 
 class TelemetryService {
   private ws: WebSocket | null = null;
@@ -109,7 +131,7 @@ class TelemetryService {
     this.setConnectionState('connecting');
 
     try {
-      this.ws = new WebSocket(this.wsUrl);
+      this.ws = new WebSocket(resolveWsUrl(this.wsUrl));
     } catch (err) {
       const detail = err instanceof Error ? err.message : String(err);
       this.setConnectionState('error', detail);

@@ -53,6 +53,17 @@ SINGULARITY_Mission_Control/
 2. Double-click `RUN_WITH_REAL_HARDWARE.bat`.
 3. If your USB port is not COM6, open `Telemetry_Bridge\bridge.js` and change `SERIAL_PORT = "COMx"`.
 
+### Option C: Deploy Online to Render.com (100% Free Docker Hosting)
+1. Push your code to your GitHub repository.
+2. Go to [render.com](https://render.com) and click **New +** → **Web Service** (or **Blueprint**).
+3. Connect your repository (`RoxyBasicNeedBot/NASA-TELEMETRY-WEB-PAGE`).
+4. Select **Docker** as runtime (Render auto-detects `Dockerfile` and `render.yaml`).
+5. Click **Create Web Service**.
+6. Render builds the container and gives you a live global HTTPS URL (`https://your-service.onrender.com`) with:
+   - Full React Liquid Glass Dashboard + Three.js 3D satellite
+   - Express REST API & SQLite database
+   - Built-in real-time WebSocket telemetry stream (`wss://`) with live satellite simulation!
+
 ---
 
 ## 🛠️ How to Update and Modify Code in Future
