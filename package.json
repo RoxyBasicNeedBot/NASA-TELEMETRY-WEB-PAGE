@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm --prefix Frontend run build",
+    "build": "cd Frontend && npm install && npm run build",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "wrangler": "^3.111.0"
+    "wrangler": "^3.114.17"
   }
 }
