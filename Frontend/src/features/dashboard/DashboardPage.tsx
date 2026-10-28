@@ -2,12 +2,16 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { Plus, Edit3, RotateCcw, LayoutGrid, ChevronDown, Check } from 'lucide-react';
+import {
+  Plus, Edit3, RotateCcw, LayoutGrid, ChevronDown, Check,
+  Sparkles, ArrowUp, Mic, SlidersHorizontal, MessageSquare
+} from 'lucide-react';
 import { useDashboardStore, selectActiveLayout } from '../../stores/dashboardStore';
 import { useMissionStore } from '../../stores/missionStore';
 import { WidgetRenderer } from './WidgetRenderer';
 import { AddWidgetModal } from './AddWidgetModal';
 import { OrbitraLogo } from '../../components/common/OrbitraLogo';
+import { useNavigate } from 'react-router-dom';
 import type { GridItemLayout } from '../../types/telemetry';
 
 const COLS = 12;
@@ -24,12 +28,14 @@ interface RGLItem {
 }
 
 export function DashboardPage() {
+  const navigate = useNavigate();
   const store = useDashboardStore();
   const activeLayout = useDashboardStore(selectActiveLayout);
   const configuredSensorIds = useMissionStore(s => s.configuredSensorIds);
   const [showAddWidget, setShowAddWidget] = useState(false);
   const [showLayoutMenu, setShowLayoutMenu] = useState(false);
   const [newLayoutName, setNewLayoutName] = useState('');
+  const [commandPrompt, setCommandPrompt] = useState('');
 
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const [gridWidth, setGridWidth] = useState(1200);
@@ -67,10 +73,28 @@ export function DashboardPage() {
     [activeLayout, store]
   );
 
+  const handleCommandSubmit = () => {
+    if (!commandPrompt.trim()) return;
+    const lower = commandPrompt.toLowerCase();
+    if (lower.includes('add widget') || lower.includes('new widget')) {
+      setShowAddWidget(true);
+      setCommandPrompt('');
+    } else if (lower.includes('reset') || lower.includes('default')) {
+      store.resetToDefault(configuredSensorIds);
+      setCommandPrompt('');
+    } else if (lower.includes('edit')) {
+      store.setEditing(true);
+      setCommandPrompt('');
+    } else {
+      // Navigate to copilot to converse
+      navigate('/copilot');
+    }
+  };
+
   if (!activeLayout) {
     return (
-      <div className="h-full flex items-center justify-center text-zinc-500 bg-black">
-        <div className="text-center p-8 bg-[#09090b] border border-white/10 rounded-xl font-mono">
+      <div className="h-full flex items-center justify-center text-zinc-400 bg-[#212121]">
+        <div className="text-center p-8 bg-[#2f2f2f] border border-white/10 rounded-2xl">
           <OrbitraLogo size={36} className="mx-auto mb-3 opacity-40" />
           <p className="text-xs text-zinc-300">No active telemetry layout found. Reload to initialize.</p>
         </div>
@@ -79,71 +103,71 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-black font-mono">
-      {/* Precision AMOLED Aerospace Toolbar */}
-      <div className="flex items-center justify-between px-3.5 py-1.5 border-b border-white/[0.08] bg-black shrink-0 z-20">
+    <div className="h-full flex flex-col bg-[#212121] relative overflow-hidden font-sans">
+      {/* ChatGPT Styled Dashboard Toolbar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 bg-[#212121] shrink-0 z-20">
         <div className="flex items-center gap-2.5 text-xs">
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] font-medium tracking-wide">Live telemetry</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#10a37f]/10 border border-[#10a37f]/20 text-[#10a37f]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10a37f] animate-pulse" />
+            <span className="text-[11px] font-medium tracking-wide">Live Stream</span>
           </div>
           <span className="text-zinc-600">·</span>
           <span className="text-zinc-400 text-xs">
-            Layout: <strong className="text-zinc-200 font-medium">{activeLayout.name}</strong>
+            Layout: <strong className="text-white font-medium">{activeLayout.name}</strong>
           </span>
           <span className="text-zinc-600 hidden md:inline">·</span>
           <span className="text-zinc-400 text-xs hidden md:inline">
-            Orbit: <strong className="text-sky-400 font-medium font-mono">1U LEO 400km</strong>
+            Standard: <strong className="text-sky-400 font-medium font-mono">1U CubeSat LEO</strong>
           </span>
         </div>
 
         {/* Toolbar Actions */}
-        <div className="flex items-center gap-1.5">
-          {/* Layout selector */}
+        <div className="flex items-center gap-2">
+          {/* Layout selector dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowLayoutMenu(m => !m)}
-              className="h-7 inline-flex items-center gap-1.5 px-2.5 text-xs text-zinc-300 hover:text-white bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-md transition-colors shadow-sm active:scale-[0.98]"
+              className="h-8 inline-flex items-center gap-1.5 px-3 text-xs text-zinc-300 hover:text-white bg-[#2f2f2f] hover:bg-[#383838] border border-white/10 rounded-full transition-all shadow-sm active:scale-[0.98]"
             >
-              <LayoutGrid size={12} className="text-zinc-400" />
+              <LayoutGrid size={13} className="text-zinc-400" />
               <span>{activeLayout.name}</span>
-              <ChevronDown size={11} className="text-zinc-500" />
+              <ChevronDown size={12} className="text-zinc-500" />
             </button>
             {showLayoutMenu && (
               <div
-                className="absolute top-full right-0 mt-1 rounded-lg shadow-2xl z-30 w-56 overflow-hidden p-1 bg-[#09090b] border border-white/10"
+                className="absolute top-full right-0 mt-1.5 rounded-2xl shadow-2xl z-30 w-56 overflow-hidden p-1.5 bg-[#2f2f2f] border border-white/10 animate-in fade-in zoom-in-95"
               >
                 <div className="space-y-0.5">
                   {store.layouts.map(l => (
                     <button
                       key={l.id}
                       onClick={() => { store.setActiveLayout(l.id); setShowLayoutMenu(false); }}
-                      className={`w-full text-left px-2.5 py-1.5 text-xs rounded transition-colors flex items-center justify-between ${
+                      className={`w-full text-left px-2.5 py-1.5 text-xs rounded-xl transition-colors flex items-center justify-between ${
                         l.id === activeLayout.id
-                          ? 'bg-white/10 text-white font-medium'
-                          : 'text-zinc-400 hover:bg-white/[0.06] hover:text-white'
+                          ? 'bg-[#383838] text-white font-medium'
+                          : 'text-zinc-400 hover:bg-[#343434] hover:text-white'
                       }`}
                     >
                       <span className="truncate">{l.name}</span>
                       <div className="flex items-center gap-1">
                         {l.isDefault && <span className="text-[10px] text-zinc-500">(default)</span>}
-                        {l.id === activeLayout.id && <Check size={11} className="text-white" />}
+                        {l.id === activeLayout.id && <Check size={12} className="text-[#10a37f]" />}
                       </div>
                     </button>
                   ))}
                 </div>
-                <div className="border-t border-white/10 mt-1 pt-1 px-1 pb-0.5">
+                <div className="border-t border-white/10 mt-1.5 pt-1.5 px-1 pb-0.5">
                   <div className="flex gap-1.5">
                     <input
                       value={newLayoutName}
                       onChange={e => setNewLayoutName(e.target.value)}
                       placeholder="New layout name…"
-                      className="h-7 flex-1 text-xs bg-black border border-white/10 rounded px-2 text-white focus:outline-none focus:border-white/30"
+                      className="h-7 flex-1 text-xs bg-[#212121] border border-white/10 rounded-lg px-2 text-white focus:outline-none focus:border-white/30"
                       onKeyDown={e => { if (e.key === 'Enter' && newLayoutName) { store.saveLayout(newLayoutName); setNewLayoutName(''); } }}
                     />
                     <button
                       onClick={() => { if (newLayoutName) { store.saveLayout(newLayoutName); setNewLayoutName(''); } }}
-                      className="h-7 px-2.5 bg-white hover:bg-zinc-200 text-black rounded text-xs font-medium"
+                      className="h-7 px-2.5 bg-white hover:bg-zinc-200 text-black rounded-lg text-xs font-medium"
                     >
                       Save
                     </button>
@@ -155,30 +179,30 @@ export function DashboardPage() {
 
           <button
             onClick={() => setShowAddWidget(true)}
-            className="h-7 inline-flex items-center gap-1.5 px-3 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-black rounded-md text-xs font-medium transition-all shadow-sm active:scale-[0.98]"
+            className="h-8 inline-flex items-center gap-1.5 px-3.5 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-black rounded-full text-xs font-medium transition-all shadow-sm active:scale-[0.98]"
           >
-            <Plus size={13} />
+            <Plus size={14} />
             <span>Add widget</span>
           </button>
 
           <button
             onClick={() => store.setEditing(!store.isEditing)}
-            className={`h-7 inline-flex items-center gap-1.5 px-2.5 rounded-md text-xs font-medium transition-all shadow-sm active:scale-[0.98] ${
+            className={`h-8 inline-flex items-center gap-1.5 px-3 rounded-full text-xs font-medium transition-all shadow-sm active:scale-[0.98] ${
               store.isEditing
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
-                : 'border border-white/10 bg-zinc-900/90 text-zinc-300 hover:text-white hover:bg-zinc-800'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                : 'border border-white/10 bg-[#2f2f2f] text-zinc-300 hover:text-white hover:bg-[#383838]'
             }`}
           >
-            <Edit3 size={11} className={store.isEditing ? 'text-amber-300' : 'text-zinc-400'} />
+            <Edit3 size={12} className={store.isEditing ? 'text-amber-300' : 'text-zinc-400'} />
             <span>{store.isEditing ? 'Done' : 'Edit grid'}</span>
           </button>
 
           <button
             onClick={() => store.resetToDefault(configuredSensorIds)}
-            className="h-7 w-7 flex items-center justify-center border border-white/10 bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-md transition-colors"
+            className="h-8 w-8 flex items-center justify-center border border-white/10 bg-[#2f2f2f] text-zinc-400 hover:text-white hover:bg-[#383838] rounded-full transition-colors"
             title="Reset layout to default"
           >
-            <RotateCcw size={12} />
+            <RotateCcw size={13} />
           </button>
         </div>
       </div>
@@ -189,8 +213,8 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* Grid */}
-      <div ref={gridContainerRef} className="flex-1 overflow-auto p-3">
+      {/* Grid Canvas */}
+      <div ref={gridContainerRef} className="flex-1 overflow-auto p-4 pb-20">
         <GridLayout
           className="layout"
           layout={activeLayout.gridLayout}
@@ -201,7 +225,7 @@ export function DashboardPage() {
           isResizable={store.isEditing}
           onLayoutChange={handleLayoutChange as any}
           draggableHandle=".widget-drag-handle"
-          margin={[12, 12]}
+          margin={[14, 14]}
           useCSSTransforms={true}
         >
           {activeLayout.widgets.map((widget) => (
@@ -212,17 +236,57 @@ export function DashboardPage() {
         </GridLayout>
 
         {activeLayout.widgets.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-72 text-zinc-500 gap-3 bg-[#08080a] border border-dashed border-white/10 rounded-xl p-8">
-            <OrbitraLogo size={42} className="opacity-30" />
+          <div className="flex flex-col items-center justify-center h-72 text-zinc-400 gap-3 bg-[#2a2a2a] border border-dashed border-white/10 rounded-2xl p-8">
+            <OrbitraLogo size={42} className="opacity-40" />
             <p className="text-xs font-medium text-zinc-300">No widgets placed in this layout.</p>
             <button
               onClick={() => setShowAddWidget(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-zinc-200 text-black rounded text-xs font-semibold uppercase tracking-wider transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-zinc-200 text-black rounded-full text-xs font-medium transition-colors shadow"
             >
-              <Plus size={12} /> Add First Widget
+              <Plus size={13} /> Add first widget
             </button>
           </div>
         )}
+      </div>
+
+      {/* Floating ChatGPT Command Pill at the bottom */}
+      <div className="absolute bottom-3 left-0 right-0 max-w-2xl mx-auto px-4 pointer-events-auto z-20">
+        <div className="rounded-[26px] bg-[#2f2f2f]/95 backdrop-blur-md border border-white/10 px-3.5 py-2 shadow-2xl flex items-center gap-2 transition-all focus-within:border-white/20">
+          <button
+            onClick={() => navigate('/copilot')}
+            className="w-7 h-7 rounded-full bg-[#10a37f]/20 text-[#10a37f] flex items-center justify-center hover:bg-[#10a37f]/30 transition-colors shrink-0"
+            title="Open Telemetry AI Copilot"
+          >
+            <Sparkles size={14} />
+          </button>
+
+          <input
+            type="text"
+            value={commandPrompt}
+            onChange={e => setCommandPrompt(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleCommandSubmit();
+              }
+            }}
+            placeholder="Ask Orbitra AI or command dashboard (e.g. 'Reset view', 'Add widget')..."
+            className="flex-1 bg-transparent text-xs text-[#ececec] placeholder-zinc-500 focus:outline-none"
+          />
+
+          <button
+            onClick={handleCommandSubmit}
+            disabled={!commandPrompt.trim()}
+            className={`w-7 h-7 rounded-full flex items-center justify-center transition-all shrink-0 ${
+              commandPrompt.trim()
+                ? 'bg-white text-black hover:bg-zinc-200'
+                : 'bg-[#424242] text-zinc-500 cursor-not-allowed'
+            }`}
+            title="Submit command or ask AI"
+          >
+            <ArrowUp size={14} />
+          </button>
+        </div>
       </div>
 
       {showAddWidget && <AddWidgetModal onClose={() => setShowAddWidget(false)} />}

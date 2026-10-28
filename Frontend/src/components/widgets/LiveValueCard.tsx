@@ -91,7 +91,7 @@ export function LiveValueCard({ fieldRef, title, compact = false }: Props) {
         ) : (
           <div className="flex flex-col gap-0.5">
             <span className="text-slate-600 text-2xl font-bold">—</span>
-            <span className="text-slate-500 text-[10px] font-mono">AWAITING PACKET</span>
+            <span className="text-zinc-500 text-[10px] font-sans">Awaiting telemetry</span>
           </div>
         )}
       </div>

@@ -4,6 +4,7 @@ interface LogoProps {
   size?: number;
   className?: string;
   variant?: 'mark' | 'full' | 'compact';
+  theme?: 'chatgpt' | 'cyan' | 'monochrome';
   animated?: boolean;
 }
 
@@ -11,7 +12,17 @@ interface LogoProps {
  * Custom Minimal Geometric Insignia — OpenAI / ChatGPT style mathematical torus
  * Interlocking 6-fold orbital ellipses forming a celestial telemetry gyroscope.
  */
-export function OrbitraLogo({ size = 24, className = '', variant = 'mark', animated = false }: LogoProps) {
+export function OrbitraLogo({
+  size = 24,
+  className = '',
+  variant = 'mark',
+  theme = 'chatgpt',
+  animated = false,
+}: LogoProps) {
+  const isChatGPT = theme === 'chatgpt';
+  const primaryColor = isChatGPT ? '#10a37f' : '#38bdf8';
+  const secondaryColor = isChatGPT ? '#059669' : '#0284c7';
+
   const mark = (
     <svg
       width={size}
@@ -24,13 +35,13 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
       <defs>
         <linearGradient id="orbitraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="50%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#0ea5e9" />
+          <stop offset="50%" stopColor={primaryColor} />
+          <stop offset="100%" stopColor={secondaryColor} />
         </linearGradient>
         <radialGradient id="singularityCore" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="60%" stopColor="#0284c7" />
-          <stop offset="100%" stopColor="#000000" />
+          <stop offset="0%" stopColor={primaryColor} />
+          <stop offset="60%" stopColor={secondaryColor} />
+          <stop offset="100%" stopColor="#171717" />
         </radialGradient>
       </defs>
 
@@ -39,7 +50,7 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
         cx="50"
         cy="50"
         r="44"
-        stroke="rgba(255, 255, 255, 0.15)"
+        stroke="rgba(255, 255, 255, 0.12)"
         strokeWidth="1.5"
         strokeDasharray="3 3"
       />
@@ -50,8 +61,8 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
         <path
           d="M 50 12 C 68 12, 88 32, 88 50 C 88 68, 68 88, 50 88 C 32 88, 12 68, 12 50 C 12 32, 32 12, 50 12"
           stroke="url(#orbitraGrad)"
-          strokeWidth="2"
-          opacity="0.85"
+          strokeWidth="2.2"
+          opacity="0.95"
         />
 
         {/* Diagonal Ellipse Alpha (-30 deg) */}
@@ -61,7 +72,7 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
           rx="40"
           ry="18"
           transform="rotate(30 50 50)"
-          stroke="rgba(255, 255, 255, 0.7)"
+          stroke="rgba(255, 255, 255, 0.75)"
           strokeWidth="1.8"
         />
 
@@ -72,8 +83,9 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
           rx="40"
           ry="18"
           transform="rotate(90 50 50)"
-          stroke="rgba(56, 189, 248, 0.85)"
+          stroke={primaryColor}
           strokeWidth="1.8"
+          opacity="0.9"
         />
 
         {/* Diagonal Ellipse Gamma (150 deg) */}
@@ -83,16 +95,16 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
           rx="40"
           ry="18"
           transform="rotate(150 50 50)"
-          stroke="rgba(255, 255, 255, 0.7)"
+          stroke="rgba(255, 255, 255, 0.75)"
           strokeWidth="1.8"
         />
       </g>
 
       {/* Internal High-Precision Telemetry Crosshair Grid */}
-      <line x1="50" y1="20" x2="50" y2="28" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="50" y1="72" x2="50" y2="80" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="20" y1="50" x2="28" y2="50" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="72" y1="50" x2="80" y2="50" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="50" y1="20" x2="50" y2="28" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="50" y1="72" x2="50" y2="80" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="20" y1="50" x2="28" y2="50" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="72" y1="50" x2="80" y2="50" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" />
 
       {/* Central Singularity Node (Hub Core) */}
       <circle cx="50" cy="50" r="7.5" fill="url(#singularityCore)" stroke="#ffffff" strokeWidth="1.5" />
@@ -106,19 +118,19 @@ export function OrbitraLogo({ size = 24, className = '', variant = 'mark', anima
 
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-2 select-none font-mono">
+      <div className="flex items-center gap-2 select-none">
         {mark}
-        <span className="font-semibold tracking-wider text-xs text-white">ORBITRA</span>
+        <span className="font-semibold tracking-wide text-xs text-white">Orbitra</span>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-2.5 select-none font-mono">
+    <div className="flex items-center gap-2.5 select-none">
       {mark}
       <div className="flex flex-col">
-        <span className="font-bold tracking-widest text-xs text-white leading-none">ORBITRA</span>
-        <span className="text-[9px] text-zinc-400 tracking-wider mt-0.5 leading-none">AEROSPACE TELEMETRY</span>
+        <span className="font-semibold tracking-tight text-xs text-white leading-none">Orbitra</span>
+        <span className="text-[10px] text-zinc-400 mt-0.5 leading-none">Intelligence 4o</span>
       </div>
     </div>
   );
@@ -142,19 +154,14 @@ export function GyroIcon({ size = 16, className = '' }: { size?: number; classNa
 export function SatelliteInsignia({ size = 18, className = '' }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      {/* 1U Cubesat outline */}
       <rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" />
-      {/* Solar Panel Wings */}
-      <path d="M7 10 L2 10 L2 14 L7 14 Z" fill="rgba(56, 189, 248, 0.2)" stroke="currentColor" />
-      <path d="M17 10 L22 10 L22 14 L17 14 Z" fill="rgba(56, 189, 248, 0.2)" stroke="currentColor" />
-      {/* Panel grid dividers */}
+      <path d="M7 10 L2 10 L2 14 L7 14 Z" fill="rgba(16, 163, 127, 0.2)" stroke="currentColor" />
+      <path d="M17 10 L22 10 L22 14 L17 14 Z" fill="rgba(16, 163, 127, 0.2)" stroke="currentColor" />
       <line x1="4.5" y1="10" x2="4.5" y2="14" stroke="currentColor" strokeWidth="1" />
       <line x1="19.5" y1="10" x2="19.5" y2="14" stroke="currentColor" strokeWidth="1" />
-      {/* Antenna */}
       <line x1="12" y1="7" x2="15" y2="2" stroke="currentColor" />
       <circle cx="15" cy="2" r="1" fill="currentColor" />
-      {/* Center optical payload */}
-      <circle cx="12" cy="12" r="2" stroke="currentColor" fill="rgba(56, 189, 248, 0.5)" />
+      <circle cx="12" cy="12" r="2" stroke="currentColor" fill="rgba(16, 163, 127, 0.5)" />
     </svg>
   );
 }

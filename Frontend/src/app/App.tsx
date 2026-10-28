@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { SetupWizard } from '../features/setup/SetupWizard';
 import { AppLayout } from './AppLayout';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
+import { TelemetryChatPage } from '../features/chat/TelemetryChatPage';
 import { TelemetryExplorerPage } from '../features/telemetry/TelemetryExplorerPage';
 import { PlotBuilderPage } from '../features/plots/PlotBuilderPage';
 import { SensorsPage } from '../features/sensors/SensorsPage';
@@ -42,11 +43,7 @@ export function App() {
 
   // Called by BlackHoleTransition when the hole has fully consumed the screen
   const handleBlackHoleComplete = useCallback(() => {
-    // Actually complete the mission setup (wizard has already gathered the data)
-    // We need the wizard to have stored its pending config. It does so via completeMission.
-    // setPhase triggers sphere reveal on the now-mounted dashboard.
     setPhase('sphere');
-    // After sphere reveal animation finishes, settle to normal
     sphereTimerRef.current = setTimeout(() => setPhase('dashboard'), 1800);
   }, []);
 
@@ -76,7 +73,6 @@ export function App() {
   if (phase === 'blackhole') {
     return (
       <div className="relative w-full h-full">
-        {/* Wizard stays mounted, will be sucked in by the overlay darkness */}
         <div className="animate-black-hole-suck absolute inset-0">
           <SetupWizard onLaunch={handleLaunchAnimation} launchingMode />
         </div>
@@ -95,6 +91,7 @@ export function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<DashboardPage />} />
+            <Route path="copilot" element={<TelemetryChatPage />} />
             <Route path="explorer" element={<TelemetryExplorerPage />} />
             <Route path="plots" element={<PlotBuilderPage />} />
             <Route path="sensors" element={<SensorsPage />} />

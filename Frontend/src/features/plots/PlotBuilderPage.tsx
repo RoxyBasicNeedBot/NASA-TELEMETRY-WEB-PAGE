@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BarChart2, Play, Plus, Check } from 'lucide-react';
+import { BarChart2, Plus, Check } from 'lucide-react';
 import { sensorRegistry } from '../sensors/registry';
 import { TimeSeriesChart } from '../../components/widgets/TimeSeriesChart';
 import { LiveValueCard } from '../../components/widgets/LiveValueCard';
@@ -28,7 +28,7 @@ const TIME_RANGES: { value: TimeRange; label: string }[] = [
   { value: '1h', label: '1 hour' },
 ];
 
-const COLORS = ['#38bdf8', '#34d399', '#fbbf24', '#818cf8', '#f87171', '#38bdf8'];
+const COLORS = ['#10a37f', '#38bdf8', '#fbbf24', '#818cf8', '#f87171'];
 
 export function PlotBuilderPage() {
   const addWidget = useDashboardStore(s => s.addWidget);
@@ -59,21 +59,23 @@ export function PlotBuilderPage() {
     const id = `widget-${nanoid()}`;
     const fieldTitle = title || (selectedFields.length > 0
       ? (sensorRegistry.getField(selectedFields[0])?.label ?? selectedFields[0])
-      : 'Plot');
-
-    const isLarge = chartType === 'cubesat' || chartType === 'map';
-    const isSmall = chartType === 'value' || chartType === 'gauge';
+      : 'Telemetry Plot');
 
     const widget: WidgetConfig = {
       id,
-      type: (chartType === 'cubesat' || chartType === 'map') ? chartType : (selectedFields.length === 0 ? 'value' : chartType),
+      type: chartType,
       title: fieldTitle,
       fields: selectedFields,
+      color: COLORS[0],
       timeRange,
       autoScale: true,
       showGrid: true,
       showLegend: selectedFields.length > 1,
+      smoothing: false,
     };
+
+    const isSmall = chartType === 'value' || chartType === 'gauge';
+    const isLarge = chartType === 'cubesat' || chartType === 'map';
 
     const gridItem: GridItemLayout = {
       i: id,
@@ -98,31 +100,31 @@ export function PlotBuilderPage() {
   const canAdd = selectedFields.length > 0 || chartType === 'cubesat' || chartType === 'map';
 
   return (
-    <div className="h-full flex bg-black">
+    <div className="h-full flex bg-[#212121] text-[#ececec] font-sans">
       {/* Left panel — field picker + config */}
-      <div className="w-80 shrink-0 border-r border-white/10 flex flex-col overflow-hidden bg-black">
-        <div className="p-4 border-b border-white/10">
-          <h1 className="text-sm font-semibold tracking-wide uppercase font-mono text-white flex items-center gap-2">
-            <BarChart2 size={16} className="text-white" /> Plot Designer
+      <div className="w-80 shrink-0 border-r border-white/5 flex flex-col overflow-hidden bg-[#1a1a1a]">
+        <div className="p-4 border-b border-white/5">
+          <h1 className="text-sm font-semibold tracking-tight text-white flex items-center gap-2">
+            <BarChart2 size={16} className="text-[#10a37f]" /> Plot Designer
           </h1>
-          <p className="text-zinc-500 text-[11px] font-mono mt-0.5">Author custom telemetry telemetry views</p>
+          <p className="text-zinc-400 text-xs mt-0.5">Author custom telemetry telemetry views</p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 font-mono">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Title */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Plot Title</label>
+            <label className="block text-[11px] text-zinc-400 mb-1 font-medium">Plot Title</label>
             <input
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Auto-inferred..."
-              className="w-full bg-[#0d0d0f] border border-white/10 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
+              className="w-full bg-[#242424] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#10a37f]"
             />
           </div>
 
           {/* Chart type */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider text-zinc-400 mb-1">Visualization Mode</label>
+            <label className="block text-[11px] text-zinc-400 mb-1 font-medium">Visualization Mode</label>
             <div className="grid grid-cols-2 gap-1.5">
               {CHART_TYPES.map(ct => (
                 <button
@@ -133,10 +135,10 @@ export function PlotBuilderPage() {
                       setSelectedFields([selectedFields[0]]);
                     }
                   }}
-                  className={`text-left px-2.5 py-1.5 rounded text-xs transition-colors border ${
+                  className={`text-left px-3 py-2 rounded-xl text-xs transition-colors border ${
                     chartType === ct.value
-                      ? 'bg-white text-black border-white font-semibold'
-                      : 'text-zinc-400 bg-zinc-900 border-white/[0.08] hover:text-white hover:bg-zinc-800'
+                      ? 'bg-white text-black border-white font-medium'
+                      : 'text-zinc-300 bg-[#242424] border-white/5 hover:text-white hover:bg-[#2c2c2c]'
                   }`}
                 >
                   {ct.label}
@@ -148,16 +150,16 @@ export function PlotBuilderPage() {
           {/* Time range */}
           {!['value', 'gauge'].includes(chartType) && (
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Sampling Window</label>
-              <div className="flex flex-wrap gap-1">
+              <label className="block text-[11px] text-zinc-400 mb-1 font-medium">Sampling Window</label>
+              <div className="flex flex-wrap gap-1.5">
                 {TIME_RANGES.map(r => (
                   <button
                     key={r.value}
                     onClick={() => setTimeRange(r.value)}
-                    className={`px-2 py-1 rounded text-xs transition-colors ${
+                    className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
                       timeRange === r.value
-                        ? 'bg-sky-600 text-white font-semibold'
-                        : 'bg-[#131929] text-white/60 hover:text-white border border-white/[0.06]'
+                        ? 'bg-[#10a37f] text-white font-medium'
+                        : 'bg-[#242424] text-zinc-400 hover:text-white border border-white/5'
                     }`}
                   >
                     {r.label}
@@ -167,126 +169,102 @@ export function PlotBuilderPage() {
             </div>
           )}
 
-          {/* Fields list */}
-          <div>
-            <label className="block text-[10px] uppercase tracking-wider text-white/50 mb-1">Telemetry Channels</label>
-            {chartType === 'cubesat' || chartType === 'map' ? (
-              <p className="text-white/40 text-[11px] py-2">Fixed sensor channel assignment.</p>
-            ) : (
+          {/* Field selection */}
+          {chartType !== 'cubesat' && chartType !== 'map' && (
+            <div>
+              <label className="block text-[11px] text-zinc-400 mb-1 font-medium">
+                Telemetry Fields {['value', 'gauge'].includes(chartType) ? '(Select 1)' : '(Multiple)'}
+              </label>
               <div className="space-y-3">
-                {sensors.map(s => {
-                  if (s.fields.length === 0) return null;
+                {sensors.map(sensor => {
+                  const sensorFields = sensor.fields;
+                  if (sensorFields.length === 0) return null;
                   return (
-                    <div key={s.sensorId} className="space-y-1">
-                      <p className="text-[10px] text-sky-400 uppercase font-semibold">{s.displayName}</p>
-                      {s.fields.map(fieldDef => {
-                        const ref = `${s.sensorId}.${fieldDef.fieldKey}`;
-                        const selected = selectedFields.includes(ref);
-                        return (
-                          <button
-                            key={ref}
-                            onClick={() => toggleField(ref)}
-                            className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors border ${
-                              selected
-                                ? 'bg-sky-500/15 border-sky-400/30 text-white'
-                                : 'text-white/60 bg-[#131929]/50 border-transparent hover:text-white hover:bg-[#131929]'
-                            }`}
-                          >
-                            <span className={`w-1.5 h-1.5 rounded-full ${selected ? 'bg-sky-400' : 'bg-white/20'}`} />
-                            <span className="flex-1 text-left">{fieldDef.label}</span>
-                            <span className="text-white/30 text-[10px]">{fieldDef.unit}</span>
-                          </button>
-                        );
-                      })}
+                    <div key={sensor.sensorId} className="space-y-1">
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
+                        {sensor.displayName}
+                      </p>
+                      <div className="space-y-1">
+                        {sensorFields.map(field => {
+                          const ref = `${sensor.sensorId}.${field.fieldKey}`;
+                          const isSelected = selectedFields.includes(ref);
+                          return (
+                            <button
+                              key={field.fieldKey}
+                              onClick={() => toggleField(ref)}
+                              className={`w-full text-left px-2.5 py-1.5 rounded-xl text-xs flex items-center justify-between transition-colors border ${
+                                isSelected
+                                  ? 'bg-[#10a37f]/15 text-[#10a37f] border-[#10a37f]/30 font-medium'
+                                  : 'text-zinc-400 hover:text-white hover:bg-[#242424] border-transparent'
+                              }`}
+                            >
+                              <span>{field.label}</span>
+                              {isSelected && <Check size={12} className="text-[#10a37f]" />}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   );
                 })}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          )}
 
-        {/* Add to dashboard */}
-        <div className="p-3 border-t border-white/10 bg-black">
+          {/* Add to Dashboard Button */}
           <button
             onClick={handleAddToDashboard}
             disabled={!canAdd}
-            className={`w-full flex items-center justify-center gap-2 py-2 rounded text-xs font-mono uppercase tracking-wider font-semibold transition-colors ${
-              added
-                ? 'bg-emerald-600 text-white'
-                : canAdd
-                ? 'bg-white hover:bg-zinc-200 text-black'
-                : 'bg-zinc-900 text-zinc-600 cursor-not-allowed border border-white/5'
+            className={`w-full py-2.5 rounded-full text-xs font-medium flex items-center justify-center gap-1.5 transition-all shadow-sm ${
+              canAdd
+                ? added
+                  ? 'bg-[#10a37f] text-white'
+                  : 'bg-white hover:bg-zinc-200 text-black active:scale-[0.98]'
+                : 'bg-[#2a2a2a] text-zinc-600 cursor-not-allowed'
             }`}
           >
-            {added ? <><Check size={14} /> Added to Console</> : <><Plus size={14} /> Commit to Dashboard</>}
+            {added ? (
+              <>
+                <Check size={14} /> Added to dashboard
+              </>
+            ) : (
+              <>
+                <Plus size={14} /> Add to dashboard
+              </>
+            )}
           </button>
         </div>
       </div>
 
-      {/* Right panel — live preview */}
-      <div className="flex-1 flex flex-col min-w-0 bg-black">
-        <div className="px-4 py-2 border-b border-white/10 flex items-center gap-2 bg-black">
-          <Play size={13} className="text-white" />
-          <span className="text-xs text-zinc-300 font-mono uppercase tracking-wider font-medium">Telemetry Monitor Preview</span>
-          {selectedFields.length > 0 && (
-            <div className="flex gap-1.5 ml-3">
-              {selectedFields.map((f, i) => {
-                const fd = sensorRegistry.getField(f);
-                return (
-                  <span
-                    key={f}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-white/10 text-white"
-                    style={{ borderLeft: `3px solid ${COLORS[i % COLORS.length]}` }}
-                  >
-                    {fd?.label ?? f}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+      {/* Right panel — Live Preview */}
+      <div className="flex-1 flex flex-col p-6 overflow-hidden bg-[#212121]">
+        <div className="mb-4">
+          <h2 className="text-sm font-semibold text-white tracking-tight">Live Widget Preview</h2>
+          <p className="text-xs text-zinc-400">Dynamic rendering with real-time incoming flight telemetry</p>
         </div>
-        <div className="flex-1 p-4 overflow-auto">
-          {selectedFields.length === 0 && chartType !== 'cubesat' && chartType !== 'map' ? (
-            <div className="h-full flex flex-col items-center justify-center text-zinc-600 gap-2 font-mono">
-              <BarChart2 size={36} className="opacity-20 text-white" />
-              <p className="text-xs">Select telemetry channel from the side panel</p>
-            </div>
+
+        <div className="flex-1 bg-[#2a2a2a] border border-white/5 rounded-2xl overflow-hidden p-4 shadow-xl">
+          {chartType === 'cubesat' ? (
+            <CubeSatViewer title={title || 'CubeSat 1U Orientation'} />
+          ) : chartType === 'map' ? (
+            <GpsMapWidget title={title || 'GPS Ground Track Map'} />
+          ) : chartType === 'value' && selectedFields[0] ? (
+            <LiveValueCard fieldRef={selectedFields[0]} title={title} />
+          ) : chartType === 'gauge' && selectedFields[0] ? (
+            <GaugeWidget fieldRef={selectedFields[0]} title={title} />
+          ) : (chartType === 'timeseries' || chartType === 'area' || chartType === 'bar') && selectedFields.length > 0 ? (
+            <TimeSeriesChart
+              series={series}
+              title={title}
+              chartType={chartType}
+              timeRange={timeRange}
+              autoScale={true}
+              showGrid={true}
+              showLegend={selectedFields.length > 1}
+            />
           ) : (
-            <div className="h-full">
-              {chartType === 'cubesat' && (
-                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-1">
-                  <CubeSatViewer title={title || 'CubeSat Attitude 3D'} />
-                </div>
-              )}
-              {chartType === 'map' && (
-                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-1">
-                  <GpsMapWidget title={title || 'GPS Ground Track Map'} />
-                </div>
-              )}
-              {chartType === 'value' && (
-                <div className="max-w-xs h-40 bg-[#08080a] border border-white/10 rounded-xl">
-                  <LiveValueCard fieldRef={selectedFields[0]} title={title} />
-                </div>
-              )}
-              {chartType === 'gauge' && (
-                <div className="max-w-xs h-64 bg-[#08080a] border border-white/10 rounded-xl">
-                  <GaugeWidget fieldRef={selectedFields[0]} title={title} />
-                </div>
-              )}
-              {['timeseries', 'area', 'bar'].includes(chartType) && (
-                <div className="h-full min-h-[350px] bg-[#08080a] border border-white/10 rounded-xl p-2">
-                  <TimeSeriesChart
-                    series={series}
-                    title={title}
-                    chartType={chartType as 'timeseries' | 'area' | 'bar'}
-                    timeRange={timeRange}
-                    autoScale={true}
-                    showGrid={true}
-                    showLegend={selectedFields.length > 1}
-                  />
-                </div>
-              )}
+            <div className="h-full flex items-center justify-center text-zinc-500 text-xs">
+              Select at least one telemetry field to render preview
             </div>
           )}
         </div>

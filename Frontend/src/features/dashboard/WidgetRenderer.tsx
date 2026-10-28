@@ -10,10 +10,6 @@ import { CubeSatViewer } from '../../components/widgets/CubeSatViewer';
 import { GpsMapWidget } from '../../components/widgets/GpsMapWidget';
 import { WidgetEditModal } from './WidgetEditModal';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Renderer — Black Hole Singularity + Apple Liquid Glass Card
-// ─────────────────────────────────────────────────────────────────────────────
-
 interface Props {
   widget: WidgetConfig;
   isEditing: boolean;
@@ -101,7 +97,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
         );
       default:
         return (
-          <div className="h-full flex items-center justify-center text-white/40 text-sm">
+          <div className="h-full flex items-center justify-center text-zinc-500 text-sm">
             Unknown widget type: {widget.type}
           </div>
         );
@@ -109,18 +105,18 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
   };
 
   return (
-    <div className="h-full flex flex-col rounded-lg overflow-hidden group bg-[#08080a] border border-white/10 hover:border-white/20 shadow-2xl transition-colors duration-150">
+    <div className="h-full flex flex-col rounded-2xl overflow-hidden group bg-[#2a2a2a] border border-white/5 hover:border-white/10 shadow-lg transition-all duration-150">
       {/* Widget title bar */}
-      <div className={`widget-drag-handle flex items-center justify-between px-3 py-1.5 border-b border-white/[0.08] shrink-0 select-none bg-[#0c0c0e] ${isEditing ? 'cursor-grab active:cursor-grabbing bg-white/10' : ''}`}>
+      <div className={`widget-drag-handle flex items-center justify-between px-3.5 py-2 border-b border-white/5 shrink-0 select-none bg-[#2a2a2a] ${isEditing ? 'cursor-grab active:cursor-grabbing bg-white/10' : ''}`}>
         <span className="text-zinc-200 text-xs font-medium tracking-tight truncate flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-sm bg-white shrink-0 opacity-80" />
-          <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-300">{widget.title}</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10a37f] shrink-0" />
+          <span className="font-sans text-xs text-white">{widget.title}</span>
         </span>
         {isEditing && (
           <div className="flex items-center gap-1 ml-2">
             <button
               onClick={() => setShowEdit(true)}
-              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Settings"
             >
@@ -128,7 +124,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
             </button>
             <button
               onClick={() => duplicateWidget(widget.id)}
-              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Duplicate"
             >
@@ -136,7 +132,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
             </button>
             <button
               onClick={() => removeWidget(widget.id)}
-              className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+              className="p-1 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
               onMouseDown={e => e.stopPropagation()}
               title="Remove"
             >
@@ -147,7 +143,7 @@ export function WidgetRenderer({ widget, isEditing }: Props) {
       </div>
 
       {/* Widget content */}
-      <div className="flex-1 min-h-0 overflow-hidden bg-black">
+      <div className="flex-1 min-h-0 overflow-hidden bg-[#242424]">
         {renderContent()}
       </div>
 
