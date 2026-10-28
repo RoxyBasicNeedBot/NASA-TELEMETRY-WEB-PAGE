@@ -81,38 +81,37 @@ export function DashboardPage() {
   return (
     <div className="h-full flex flex-col bg-black font-mono">
       {/* Precision AMOLED Aerospace Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-black shrink-0 z-20">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+      <div className="flex items-center justify-between px-3.5 py-1.5 border-b border-white/[0.08] bg-black shrink-0 z-20">
+        <div className="flex items-center gap-2.5 text-xs">
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] font-bold tracking-wider text-emerald-300 uppercase">
-              LIVE TELEMETRY
-            </span>
+            <span className="text-[10px] font-medium tracking-wide">Live telemetry</span>
           </div>
-          <span className="text-white/20 hidden sm:inline">|</span>
-          <span className="hidden sm:inline text-[11px] text-zinc-400">
-            LAYOUT: <strong className="text-white font-medium uppercase">{activeLayout.name}</strong>
+          <span className="text-zinc-600">·</span>
+          <span className="text-zinc-400 text-xs">
+            Layout: <strong className="text-zinc-200 font-medium">{activeLayout.name}</strong>
           </span>
-          <span className="hidden md:inline text-[11px] text-zinc-400">
-            ORBIT: <strong className="text-sky-400 font-medium">1U LEO 400KM</strong>
+          <span className="text-zinc-600 hidden md:inline">·</span>
+          <span className="text-zinc-400 text-xs hidden md:inline">
+            Orbit: <strong className="text-sky-400 font-medium font-mono">1U LEO 400km</strong>
           </span>
         </div>
 
         {/* Toolbar Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {/* Layout selector */}
           <div className="relative">
             <button
               onClick={() => setShowLayoutMenu(m => !m)}
-              className="flex items-center gap-1.5 px-2.5 py-1 text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-white/10 rounded text-xs transition-colors"
+              className="h-7 inline-flex items-center gap-1.5 px-2.5 text-xs text-zinc-300 hover:text-white bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 rounded-md transition-colors shadow-sm active:scale-[0.98]"
             >
-              <LayoutGrid size={12} className="text-sky-400" />
+              <LayoutGrid size={12} className="text-zinc-400" />
               <span>{activeLayout.name}</span>
               <ChevronDown size={11} className="text-zinc-500" />
             </button>
             {showLayoutMenu && (
               <div
-                className="absolute top-full right-0 mt-1.5 rounded-lg shadow-2xl z-30 w-60 overflow-hidden p-1 bg-[#09090b] border border-white/10"
+                className="absolute top-full right-0 mt-1 rounded-lg shadow-2xl z-30 w-56 overflow-hidden p-1 bg-[#09090b] border border-white/10"
               >
                 <div className="space-y-0.5">
                   {store.layouts.map(l => (
@@ -121,14 +120,14 @@ export function DashboardPage() {
                       onClick={() => { store.setActiveLayout(l.id); setShowLayoutMenu(false); }}
                       className={`w-full text-left px-2.5 py-1.5 text-xs rounded transition-colors flex items-center justify-between ${
                         l.id === activeLayout.id
-                          ? 'bg-white/10 text-white border border-white/20 font-medium'
+                          ? 'bg-white/10 text-white font-medium'
                           : 'text-zinc-400 hover:bg-white/[0.06] hover:text-white'
                       }`}
                     >
                       <span className="truncate">{l.name}</span>
                       <div className="flex items-center gap-1">
                         {l.isDefault && <span className="text-[10px] text-zinc-500">(default)</span>}
-                        {l.id === activeLayout.id && <Check size={11} className="text-sky-400" />}
+                        {l.id === activeLayout.id && <Check size={11} className="text-white" />}
                       </div>
                     </button>
                   ))}
@@ -139,12 +138,12 @@ export function DashboardPage() {
                       value={newLayoutName}
                       onChange={e => setNewLayoutName(e.target.value)}
                       placeholder="New layout name…"
-                      className="flex-1 text-xs bg-black border border-white/10 rounded px-2 py-1 text-white focus:outline-none focus:border-white/30"
+                      className="h-7 flex-1 text-xs bg-black border border-white/10 rounded px-2 text-white focus:outline-none focus:border-white/30"
                       onKeyDown={e => { if (e.key === 'Enter' && newLayoutName) { store.saveLayout(newLayoutName); setNewLayoutName(''); } }}
                     />
                     <button
                       onClick={() => { if (newLayoutName) { store.saveLayout(newLayoutName); setNewLayoutName(''); } }}
-                      className="px-2.5 py-1 bg-white hover:bg-zinc-200 text-black rounded text-xs font-semibold"
+                      className="h-7 px-2.5 bg-white hover:bg-zinc-200 text-black rounded text-xs font-medium"
                     >
                       Save
                     </button>
@@ -156,25 +155,27 @@ export function DashboardPage() {
 
           <button
             onClick={() => setShowAddWidget(true)}
-            className="flex items-center gap-1 px-3 py-1 bg-white hover:bg-zinc-200 text-black rounded text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm"
+            className="h-7 inline-flex items-center gap-1.5 px-3 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-black rounded-md text-xs font-medium transition-all shadow-sm active:scale-[0.98]"
           >
-            <Plus size={12} /> Add Widget
+            <Plus size={13} />
+            <span>Add widget</span>
           </button>
 
           <button
             onClick={() => store.setEditing(!store.isEditing)}
-            className={`flex items-center gap-1 px-2.5 py-1 border rounded text-xs transition-colors uppercase tracking-wider ${
+            className={`h-7 inline-flex items-center gap-1.5 px-2.5 rounded-md text-xs font-medium transition-all shadow-sm active:scale-[0.98] ${
               store.isEditing
-                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                : 'border-white/10 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800'
+                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                : 'border border-white/10 bg-zinc-900/90 text-zinc-300 hover:text-white hover:bg-zinc-800'
             }`}
           >
-            <Edit3 size={11} /> {store.isEditing ? 'Done' : 'Edit'}
+            <Edit3 size={11} className={store.isEditing ? 'text-amber-300' : 'text-zinc-400'} />
+            <span>{store.isEditing ? 'Done' : 'Edit grid'}</span>
           </button>
 
           <button
             onClick={() => store.resetToDefault(configuredSensorIds)}
-            className="p-1 border border-white/10 bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded text-xs transition-colors"
+            className="h-7 w-7 flex items-center justify-center border border-white/10 bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-md transition-colors"
             title="Reset layout to default"
           >
             <RotateCcw size={12} />
