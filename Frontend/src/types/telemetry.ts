@@ -1,8 +1,8 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// SINGULARITY — Core Telemetry Types
-// ─────────────────────────────────────────────────────────────────────────────
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// VYOMAASTRA â€” Core Telemetry Types
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── Raw bridge packet (flat legacy format from bridge.js) ────────────────────
+// â”€â”€ Raw bridge packet (flat legacy format from bridge.js) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface RawLegacyPacket {
   packetNo: number;
   timestamp: number;
@@ -25,7 +25,7 @@ export interface RawLegacyPacket {
   gpsFix?: number;
 }
 
-// ── Future nested format (for upcoming sensors) ───────────────────────────────
+// â”€â”€ Future nested format (for upcoming sensors) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface RawNestedPacket {
   schemaVersion: 1;
   missionId: string;
@@ -37,7 +37,7 @@ export interface RawNestedPacket {
 
 export type RawPacket = RawLegacyPacket | RawNestedPacket;
 
-// ── Normalized telemetry reading (internal model) ────────────────────────────
+// â”€â”€ Normalized telemetry reading (internal model) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type DataQuality = 'ok' | 'stale' | 'invalid' | 'estimated';
 export type TimestampSource = 'packet' | 'bridge' | 'fallback';
 
@@ -45,8 +45,8 @@ export interface NormalizedReading {
   sensorId: string;       // e.g. "dht11"
   fieldKey: string;       // e.g. "temperature"
   value: number;
-  unit: string;           // e.g. "°C"
-  timestamp: number;      // Unix ms — preserved from packet, never fabricated
+  unit: string;           // e.g. "Â°C"
+  timestamp: number;      // Unix ms â€” preserved from packet, never fabricated
   timestampSource: TimestampSource;
   packetNo: number | null;
   quality: DataQuality;
@@ -63,7 +63,7 @@ export interface NormalizedPacket {
   parseWarnings: string[];
 }
 
-// ── Sensor field definition ───────────────────────────────────────────────────
+// â”€â”€ Sensor field definition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type DataType = 'number' | 'integer' | 'boolean' | 'string';
 export type ChartType = 'timeseries' | 'area' | 'bar' | 'gauge' | 'value' | 'table' | 'map' | 'cubesat';
 
@@ -77,7 +77,7 @@ export interface AlertThreshold {
 export interface SensorFieldDefinition {
   fieldKey: string;        // e.g. "temperature"
   label: string;           // e.g. "Temperature"
-  unit: string;            // e.g. "°C"
+  unit: string;            // e.g. "Â°C"
   dataType: DataType;
   min?: number;
   max?: number;
@@ -87,7 +87,7 @@ export interface SensorFieldDefinition {
   description?: string;
 }
 
-// ── Sensor definition ─────────────────────────────────────────────────────────
+// â”€â”€ Sensor definition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type SensorStatus =
   | 'configured'   // selected in wizard, no data yet
   | 'receiving'    // actively receiving data
@@ -110,7 +110,7 @@ export interface SensorDefinition {
   readingRateHz?: number;
 }
 
-// ── Mission configuration ─────────────────────────────────────────────────────
+// â”€â”€ Mission configuration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface MissionConfig {
   missionName: string;
   deviceId: string;
@@ -122,7 +122,7 @@ export interface MissionConfig {
   updatedAt: number;
 }
 
-// ── Widget configuration ──────────────────────────────────────────────────────
+// â”€â”€ Widget configuration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface WidgetConfig {
   id: string;
   type: ChartType;
@@ -150,7 +150,7 @@ export interface CustomTimeRange {
   to: number;    // Unix ms
 }
 
-// ── Dashboard layout ──────────────────────────────────────────────────────────
+// â”€â”€ Dashboard layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface GridItemLayout {
   i: string;      // widget id
   x: number;
@@ -171,7 +171,7 @@ export interface DashboardLayout {
   updatedAt: number;
 }
 
-// ── Connection state ──────────────────────────────────────────────────────────
+// â”€â”€ Connection state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type ConnectionState =
   | 'idle'
   | 'connecting'
@@ -180,7 +180,7 @@ export type ConnectionState =
   | 'stale'
   | 'error';
 
-// ── Telemetry store shape ─────────────────────────────────────────────────────
+// â”€â”€ Telemetry store shape â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface PacketDiagnostics {
   received: number;
   invalid: number;
@@ -200,14 +200,14 @@ export interface ConnectionEvent {
   detail?: string;
 }
 
-// ── Field sample (stored in ring buffer) ─────────────────────────────────────
+// â”€â”€ Field sample (stored in ring buffer) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface FieldSample {
   timestamp: number;   // Unix ms
   value: number;
   quality: DataQuality;
 }
 
-// ── Alert ─────────────────────────────────────────────────────────────────────
+// â”€â”€ Alert â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type AlertSeverity = 'info' | 'warning' | 'critical';
 
 export interface TelemetryAlert {

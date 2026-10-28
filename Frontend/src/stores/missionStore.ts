@@ -1,14 +1,14 @@
-import { create } from 'zustand';
+﻿import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { MissionConfig } from '../types/telemetry';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Mission Store — persisted to localStorage
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Mission Store â€” persisted to localStorage
 // Holds all mission configuration set during setup wizard.
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const DEFAULT_MISSION: MissionConfig = {
-  missionName: 'SINGULARITY',
+  missionName: 'VYOMAASTRA',
   deviceId: 'esp8266-rx',
   wsUrl: 'ws://localhost:8081',
   configuredSensorIds: ['dht11'],
@@ -71,7 +71,7 @@ export const useMissionStore = create<MissionState>()(
         })),
     }),
     {
-      name: 'singularity-mission',
+      name: 'vyomaastra-mission',
       version: 1,
     }
   )

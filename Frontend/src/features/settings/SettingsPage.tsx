@@ -1,13 +1,13 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Settings, RotateCcw, Trash2, Wifi, RefreshCw, AlertTriangle, ExternalLink } from 'lucide-react';
 import { useMissionStore } from '../../stores/missionStore';
 import { useTelemetryStore } from '../../stores/telemetryStore';
 import { useDashboardStore } from '../../stores/dashboardStore';
 import { telemetryService } from '../../services/telemetryService';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Settings Page — Black Hole Singularity + Apple Liquid Glass UI
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Settings Page â€” Black Hole Singularity + Apple Liquid Glass UI
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function SettingsPage() {
   const mission = useMissionStore();
@@ -99,7 +99,7 @@ export function SettingsPage() {
           }`}
         >
           <RefreshCw size={14} className={saved ? 'animate-spin' : ''} />
-          {saved ? 'Saved & Reconnecting…' : 'Save & Reconnect'}
+          {saved ? 'Saved & Reconnectingâ€¦' : 'Save & Reconnect'}
         </button>
       </div>
 
@@ -165,7 +165,7 @@ export function SettingsPage() {
 
       {/* Info */}
       <div className="text-xs text-white/30 space-y-1 px-1 font-mono">
-        <p>SINGULARITY Telemetry Platform · Black Hole Singularity Edition</p>
+        <p>VYOMAASTRA Telemetry Platform Â· Black Hole Singularity Edition</p>
         <p>Bridge: <a href="https://github.com" className="text-white/50 hover:text-white inline-flex items-center gap-0.5" target="_blank" rel="noopener noreferrer">singularity-telemetry-bridge <ExternalLink size={10} /></a></p>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Database, Download, RefreshCw } from 'lucide-react';
 import { format, subHours, subMinutes } from 'date-fns';
 import { sensorRegistry } from '../sensors/registry';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Data History Page — Black Hole Singularity + Apple Liquid Glass Table
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Data History Page â€” Black Hole Singularity + Apple Liquid Glass Table
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const BACKEND = 'http://localhost:3001';
 
@@ -70,7 +70,7 @@ export function DataHistoryPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `singularity_${sensorId}_${fieldKey}_${Date.now()}.csv`;
+      a.download = `vyomaastra_${sensorId}_${fieldKey}_${Date.now()}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
@@ -99,7 +99,7 @@ export function DataHistoryPage() {
           >
             {fields.map(({ sensorId, fieldDef }) => (
               <option key={`${sensorId}.${fieldDef.fieldKey}`} value={`${sensorId}.${fieldDef.fieldKey}`} className="bg-black text-white">
-                {sensorRegistry.getSensor(sensorId)?.displayName} · {fieldDef.label}
+                {sensorRegistry.getSensor(sensorId)?.displayName} Â· {fieldDef.label}
               </option>
             ))}
           </select>
@@ -169,7 +169,7 @@ export function DataHistoryPage() {
 
         <div className="max-h-[50vh] overflow-y-auto">
           {loading && (
-            <div className="px-4 py-8 text-center text-white/40 text-sm">Loading telemetry history…</div>
+            <div className="px-4 py-8 text-center text-white/40 text-sm">Loading telemetry historyâ€¦</div>
           )}
           {!loading && rows.length === 0 && (
             <div className="px-4 py-8 text-center text-white/40 text-sm">
@@ -185,7 +185,7 @@ export function DataHistoryPage() {
                 className="grid grid-cols-[auto_auto_1fr_auto_auto] gap-0 px-4 py-2.5 border-b border-white/[0.04] hover:bg-white/[0.04] transition-all items-center text-xs"
               >
                 <span className="text-white/50 font-mono w-24">{format(new Date(row.ts), 'HH:mm:ss.SSS')}</span>
-                <span className="text-white/30 font-mono w-16 ml-4">{row.packet_no ?? '—'}</span>
+                <span className="text-white/30 font-mono w-16 ml-4">{row.packet_no ?? 'â€”'}</span>
                 <span className="text-[#c026d3] font-mono font-semibold ml-4 drop-shadow-[0_0_6px_rgba(192,38,211,0.3)]">
                   {row.value.toFixed(fd?.precision ?? 2)}
                 </span>

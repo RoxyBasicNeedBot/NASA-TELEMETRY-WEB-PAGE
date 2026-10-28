@@ -1,10 +1,10 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 import { useTelemetryStore } from '../stores/telemetryStore';
 import { sensorRegistry } from '../features/sensors/registry';
 import type { NormalizedPacket, ConnectionState } from '../types/telemetry';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SINGULARITY Telemetry Service
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// VYOMAASTRA Telemetry Service
 //
 // - Single shared WebSocket connection (no per-chart connections)
 // - Parses flat legacy + future nested packet formats
@@ -12,9 +12,9 @@ import type { NormalizedPacket, ConnectionState } from '../types/telemetry';
 // - Stale detection: marks 'stale' if no packet for 10s
 // - Distributes readings to Zustand store
 // - Posts readings to backend for persistence
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── Zod schemas ───────────────────────────────────────────────────────────────
+// â”€â”€ Zod schemas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const FlatPacketSchema = z.object({
   packetNo: z.number(),
   timestamp: z.number().optional(),
@@ -46,7 +46,7 @@ const NestedPacketSchema = z.object({
   sensors: z.record(z.unknown()).optional(),
 });
 
-// ── Config ────────────────────────────────────────────────────────────────────
+// â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const STALE_TIMEOUT_MS = 10_000;
 const BACKOFF_BASE_MS = 1_000;
 const BACKOFF_MAX_MS = 30_000;
@@ -57,7 +57,7 @@ class TelemetryService {
   private ws: WebSocket | null = null;
   private wsUrl: string = 'ws://localhost:8081';
   private deviceId: string = 'esp8266-rx';
-  private missionId: string = 'SINGULARITY';
+  private missionId: string = 'VYOMAASTRA';
   private enabledSensorIds: string[] = ['dht11'];
   private reconnectAttempts = 0;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -143,7 +143,7 @@ class TelemetryService {
     this.resetStaleTimer();
     const store = useTelemetryStore.getState();
 
-    // ── Parse JSON ──────────────────────────────────────────────────────────
+    // â”€â”€ Parse JSON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let parsed: unknown;
     try {
       parsed = JSON.parse(rawJson);
@@ -152,7 +152,7 @@ class TelemetryService {
       return;
     }
 
-    // ── Build normalized packet shell ───────────────────────────────────────
+    // â”€â”€ Build normalized packet shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const packet: NormalizedPacket = {
       raw: parsed,
       packetNo: null,
@@ -162,17 +162,17 @@ class TelemetryService {
       parseWarnings: [],
     };
 
-    // ── Try flat legacy schema ──────────────────────────────────────────────
+    // â”€â”€ Try flat legacy schema â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const flat = FlatPacketSchema.safeParse(parsed);
     if (flat.success) {
       packet.packetNo = flat.data.packetNo;
-      // Bridge sets timestamp to Date.now() — always valid
+      // Bridge sets timestamp to Date.now() â€” always valid
       if (typeof flat.data.timestamp === 'number' && isFinite(flat.data.timestamp) && flat.data.timestamp > 0) {
         packet.timestamp = flat.data.timestamp;
         packet.timestampSource = 'bridge';
       }
     } else {
-      // ── Try nested schema ─────────────────────────────────────────────────
+      // â”€â”€ Try nested schema â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       const nested = NestedPacketSchema.safeParse(parsed);
       if (nested.success) {
         packet.packetNo = nested.data.packetNo;
@@ -186,7 +186,7 @@ class TelemetryService {
       }
     }
 
-    // ── Run adapters ────────────────────────────────────────────────────────
+    // â”€â”€ Run adapters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const readings = sensorRegistry.normalizePacket(
       packet,
       this.enabledSensorIds,
@@ -209,10 +209,10 @@ class TelemetryService {
       }
     }
 
-    // ── Persist to backend ──────────────────────────────────────────────────
+    // â”€â”€ Persist to backend â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (readings.length > 0) {
       this.persistReadings(readings).catch(() => {
-        // Backend unavailable — silently continue; data still in memory buffer
+        // Backend unavailable â€” silently continue; data still in memory buffer
       });
     }
   }
@@ -282,5 +282,5 @@ class TelemetryService {
   }
 }
 
-// ── Singleton ──────────────────────────────────────────────────────────────────
+// â”€â”€ Singleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const telemetryService = new TelemetryService();

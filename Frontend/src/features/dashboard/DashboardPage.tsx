@@ -2,7 +2,7 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { Plus, Edit3, RotateCcw, LayoutGrid, ChevronDown, Check } from 'lucide-react';
+import { Plus, Edit3, RotateCcw, LayoutGrid, ChevronDown, Check, Satellite } from 'lucide-react';
 import { useDashboardStore, selectActiveLayout } from '../../stores/dashboardStore';
 import { useMissionStore } from '../../stores/missionStore';
 import { WidgetRenderer } from './WidgetRenderer';
@@ -83,6 +83,48 @@ export function DashboardPage() {
 
   return (
     <div className="h-full flex flex-col bg-transparent">
+      {/* VYOMAASTRA Large Header Banner on Main Dashboard */}
+      <div
+        className="px-6 py-3.5 border-b border-white/[0.08] shrink-0 flex flex-wrap items-center justify-between gap-4 z-10"
+        style={{
+          background: 'linear-gradient(90deg, rgba(124, 58, 237, 0.15) 0%, rgba(192, 38, 211, 0.08) 35%, rgba(0, 0, 0, 0.6) 100%)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
+          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4)',
+        }}
+      >
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7c3aed]/40 to-[#c026d3]/30 border border-[#c026d3]/50 flex items-center justify-center shrink-0 shadow-[0_0_28px_rgba(192,38,211,0.45)]">
+            <Satellite size={24} className="text-[#c026d3] animate-accretion-spin" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#30D158] border-2 border-black shadow-[0_0_8px_#30D158]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-widest heading-singularity uppercase">
+                VYOMAASTRA
+              </h1>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#c026d3]/20 border border-[#c026d3]/40 text-[#f0abfc] shadow-[0_0_14px_rgba(192,38,211,0.3)]">
+                CUBESAT MISSION CONTROL
+              </span>
+            </div>
+            <p className="text-white/50 text-xs font-mono tracking-wider mt-0.5">
+              ORBITAL TELEMETRY · AEROSPACE PROPULSION & SENSOR DYNAMICS
+            </p>
+          </div>
+        </div>
+
+        {/* Status badges */}
+        <div className="hidden lg:flex items-center gap-2.5">
+          <div className="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-white/80 flex items-center gap-2 shadow-inner">
+            <span className="w-2 h-2 rounded-full bg-[#30D158] animate-pulse" />
+            <span>FLIGHT READY</span>
+          </div>
+          <div className="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-white/80">
+            SYS: <strong className="text-white">ONLINE</strong>
+          </div>
+        </div>
+      </div>
+
       {/* Liquid Glass Toolbar */}
       <div
         className="flex items-center gap-2 px-5 py-2.5 border-b border-white/[0.06] shrink-0 z-20"

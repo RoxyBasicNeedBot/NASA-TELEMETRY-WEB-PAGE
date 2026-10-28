@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   Satellite, LayoutDashboard, Radio, BarChart2, Cpu, Database,
@@ -10,9 +10,9 @@ import { useMissionStore } from '../stores/missionStore';
 import { sensorRegistry } from '../features/sensors/registry';
 import { format } from 'date-fns';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// App Layout — Black Hole Singularity + Apple Liquid Glass
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// App Layout â€” Black Hole VYOMAASTRA + Apple Liquid Glass
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const NAV_ITEMS = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', exact: true },
@@ -31,7 +31,7 @@ function ConnectionBadge() {
   const config = {
     idle:         { icon: Wifi, color: 'text-white/40', bg: 'bg-white/[0.04]', dot: 'bg-white/40', label: 'Idle' },
     connecting:   { icon: Loader2, color: 'text-[#c026d3]', bg: 'bg-[#7c3aed]/10', dot: 'bg-[#c026d3] animate-pulse', label: 'Connecting' },
-    connected:    { icon: Wifi, color: 'text-[#c026d3]', bg: 'bg-[#7c3aed]/15', dot: 'bg-[#c026d3] shadow-[0_0_10px_#c026d3] animate-singularity-pulse', label: 'Connected' },
+    connected:    { icon: Wifi, color: 'text-[#c026d3]', bg: 'bg-[#7c3aed]/15', dot: 'bg-[#c026d3] shadow-[0_0_10px_#c026d3] animate-VYOMAASTRA-pulse', label: 'Connected' },
     disconnected: { icon: WifiOff, color: 'text-[#FF453A]', bg: 'bg-[#FF453A]/10', dot: 'bg-[#FF453A]', label: 'Disconnected' },
     stale:        { icon: AlertTriangle, color: 'text-[#FF9F0A]', bg: 'bg-[#FF9F0A]/10', dot: 'bg-[#FF9F0A]', label: 'Stale Data' },
     error:        { icon: WifiOff, color: 'text-[#FF453A]', bg: 'bg-[#FF453A]/10', dot: 'bg-[#FF453A]', label: 'Error' },
@@ -46,7 +46,7 @@ function ConnectionBadge() {
       <span className={`text-xs font-medium ${config.color} hidden sm:block tracking-tight`}>{config.label}</span>
       {lastTs && state === 'connected' && (
         <span className="text-xs text-white/40 hidden lg:block font-mono">
-          · {format(new Date(lastTs), 'HH:mm:ss')}
+          Â· {format(new Date(lastTs), 'HH:mm:ss')}
         </span>
       )}
     </div>
@@ -147,7 +147,7 @@ export function AppLayout() {
             <div className="absolute inset-0 rounded-xl border border-white/20 pointer-events-none" />
           </div>
           <div className="hidden sm:block">
-            <span className="font-bold tracking-tight text-sm heading-singularity">SINGULARITY</span>
+            <span className="font-bold tracking-tight text-sm heading-VYOMAASTRA">VYOMAASTRA</span>
             <span className="text-white/40 text-xs ml-2 hidden md:inline font-medium tracking-normal">{missionName}</span>
           </div>
         </div>

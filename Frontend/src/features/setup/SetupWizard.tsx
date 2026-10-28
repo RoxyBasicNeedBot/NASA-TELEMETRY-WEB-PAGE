@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Satellite, Wifi, Loader2, CheckCircle2, XCircle, ChevronRight, ChevronLeft, Thermometer, Compass, Gauge, MapPin, Zap } from 'lucide-react';
 import { useMissionStore } from '../../stores/missionStore';
 import { useDashboardStore } from '../../stores/dashboardStore';
 import { sensorRegistry } from '../sensors/registry';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Setup Wizard — Black Hole Singularity + Apple Liquid Glass
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Setup Wizard â€” Black Hole Singularity + Apple Liquid Glass
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type Step = 'welcome' | 'connection' | 'sensors' | 'confirm';
 type TestState = 'idle' | 'connecting' | 'connected' | 'failed' | 'stale';
@@ -17,7 +17,7 @@ const SENSOR_CARDS = [
     name: 'DHT11',
     icon: Thermometer,
     description: 'Digital temperature & humidity sensor',
-    fields: ['Temperature (°C)', 'Relative Humidity (%)'],
+    fields: ['Temperature (Â°C)', 'Relative Humidity (%)'],
     color: 'from-[#c026d3]/20 via-[#7c3aed]/10 to-transparent',
     border: 'border-[#c026d3]/40',
     iconColor: 'text-[#c026d3]',
@@ -28,7 +28,7 @@ const SENSOR_CARDS = [
     name: 'MPU6050',
     icon: Compass,
     description: '6-axis IMU with accelerometer & gyroscope',
-    fields: ['Accel X/Y/Z (m/s²)', 'Gyro X/Y/Z (°/s)'],
+    fields: ['Accel X/Y/Z (m/sÂ²)', 'Gyro X/Y/Z (Â°/s)'],
     color: 'from-[#7c3aed]/25 via-[#4c1d95]/15 to-transparent',
     border: 'border-[#7c3aed]/40',
     iconColor: 'text-[#a78bfa]',
@@ -38,7 +38,7 @@ const SENSOR_CARDS = [
     name: 'BMP280',
     icon: Gauge,
     description: 'Barometric pressure & temperature sensor',
-    fields: ['Pressure (hPa)', 'Temperature (°C)', 'bmpAltitude (m)'],
+    fields: ['Pressure (hPa)', 'Temperature (Â°C)', 'bmpAltitude (m)'],
     color: 'from-[#ff6b00]/20 via-[#f59e0b]/10 to-transparent',
     border: 'border-[#f59e0b]/40',
     iconColor: 'text-[#f59e0b]',
@@ -72,7 +72,7 @@ function ConnectionTester({ wsUrl }: { wsUrl: string }) {
 
   const runTest = () => {
     if (ws) { ws.close(); setWs(null); }
-    setResult({ state: 'connecting', message: `Connecting to ${wsUrl}…`, latestPacket: null });
+    setResult({ state: 'connecting', message: `Connecting to ${wsUrl}â€¦`, latestPacket: null });
     const start = Date.now();
     let socket: WebSocket;
     try {
@@ -90,7 +90,7 @@ function ConnectionTester({ wsUrl }: { wsUrl: string }) {
     socket.onopen = () => {
       clearTimeout(timeout);
       const latencyMs = Date.now() - start;
-      setResult((r) => ({ ...r, state: 'connected', message: `Connected in ${latencyMs}ms. Waiting for first packet…`, latencyMs }));
+      setResult((r) => ({ ...r, state: 'connected', message: `Connected in ${latencyMs}ms. Waiting for first packetâ€¦`, latencyMs }));
     };
     socket.onmessage = (e) => {
       clearTimeout(timeout);
@@ -246,7 +246,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.6), 0 0 60px rgba(124,58,237,0.08)',
           }}
         >
-          {/* ── Welcome ──────────────────────────────────────────────────── */}
+          {/* â”€â”€ Welcome â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {step === 'welcome' && (
             <div className="text-center space-y-6">
               <div className="flex justify-center">
@@ -268,11 +268,11 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
                 </div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold tracking-tight heading-singularity">SINGULARITY</h1>
+                <h1 className="text-3xl font-bold tracking-tight heading-singularity">VYOMAASTRA</h1>
                 <p className="text-white/50 mt-1 text-sm font-normal">Modular CubeSat & Aerospace Telemetry Platform</p>
               </div>
               <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5 text-left space-y-2 backdrop-blur-md">
-                <h2 className="text-base font-semibold text-white">Configure Your SINGULARITY Mission</h2>
+                <h2 className="text-base font-semibold text-white">Configure Your VYOMAASTRA Mission</h2>
                 <p className="text-white/60 text-sm leading-relaxed">
                   Select the sensors currently connected to your telemetry system and configure your mission parameters.
                   This setup wizard runs once and can be reconfigured at any time from Settings.
@@ -287,7 +287,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
             </div>
           )}
 
-          {/* ── Connection ────────────────────────────────────────────────── */}
+          {/* â”€â”€ Connection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {step === 'connection' && (
             <div className="space-y-6">
               <div>
@@ -301,7 +301,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
                     value={missionName}
                     onChange={e => setMissionName(e.target.value)}
                     className="w-full liquid-glass-input px-3.5 py-2.5 text-sm"
-                    placeholder="SINGULARITY"
+                    placeholder="VYOMAASTRA"
                   />
                 </div>
                 <div>
@@ -341,7 +341,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
             </div>
           )}
 
-          {/* ── Sensor Selection ──────────────────────────────────────────── */}
+          {/* â”€â”€ Sensor Selection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {step === 'sensors' && (
             <div className="space-y-6">
               <div>
@@ -395,7 +395,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
               <div className="bg-[#f59e0b]/10 border border-[#f59e0b]/25 rounded-2xl p-3.5 flex gap-2.5 backdrop-blur-md">
                 <Zap size={15} className="text-[#f59e0b] mt-0.5 shrink-0" />
                 <p className="text-xs text-[#f59e0b]/90 leading-relaxed">
-                  Sensors will show <strong>"Configured — awaiting telemetry"</strong> until real data arrives. No readings will be fabricated for unconnected sensors.
+                  Sensors will show <strong>"Configured â€” awaiting telemetry"</strong> until real data arrives. No readings will be fabricated for unconnected sensors.
                 </p>
               </div>
               <div className="flex gap-3 pt-2">
@@ -415,7 +415,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
             </div>
           )}
 
-          {/* ── Confirm ───────────────────────────────────────────────────── */}
+          {/* â”€â”€ Confirm â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {step === 'confirm' && (
             <div className="space-y-6">
               <div>
@@ -450,7 +450,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
               </div>
               <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-3.5 backdrop-blur-md">
                 <p className="text-xs text-white/50 leading-relaxed">
-                  All configured sensors will display <strong className="text-white/80">"Configured — awaiting telemetry"</strong> until real data arrives from your hardware. You can reconfigure this at any time from the Settings page.
+                  All configured sensors will display <strong className="text-white/80">"Configured â€” awaiting telemetry"</strong> until real data arrives from your hardware. You can reconfigure this at any time from the Settings page.
                 </p>
               </div>
               <div className="flex gap-3 pt-2">
@@ -464,7 +464,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
                   onClick={handleComplete}
                   className="flex-1 flex items-center justify-center gap-2 py-3 liquid-glass-btn-primary font-bold transition-all duration-300"
                 >
-                  <Satellite size={17} /> Launch SINGULARITY Dashboard
+                  <Satellite size={17} /> Launch VYOMAASTRA Dashboard
                 </button>
               </div>
             </div>
@@ -472,7 +472,7 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
         </div>
 
         <p className="text-center text-white/30 text-xs mt-4 font-mono">
-          SINGULARITY Telemetry Platform · Singularity Edition
+          VYOMAASTRA Telemetry Platform Â· Singularity Edition
         </p>
       </div>
     </div>
