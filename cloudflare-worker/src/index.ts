@@ -4,6 +4,7 @@
 
 export interface Env {
   DB?: D1Database;
+  ASSETS?: Fetcher;
   ENVIRONMENT?: string;
 }
 
@@ -311,6 +312,11 @@ export default {
           headers: { ...corsHeaders(), 'Content-Type': 'application/json' },
         });
       }
+    }
+
+    // Serve compiled Frontend static assets (if bound via [assets])
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
     }
 
     return new Response(JSON.stringify({ error: 'Not found' }), {

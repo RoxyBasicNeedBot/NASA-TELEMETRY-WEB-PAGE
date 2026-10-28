@@ -1,0 +1,12 @@
+name = "nasa-telemetry-web-page"
+main = "cloudflare-worker/src/index.ts"
+compatibility_date = "2024-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "Frontend/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[vars]
+ENVIRONMENT = "production"
