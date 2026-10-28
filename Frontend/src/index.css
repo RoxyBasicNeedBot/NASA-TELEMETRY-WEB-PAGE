@@ -27,16 +27,55 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #000000;
+  /* Deep Space Universe Theme: Glowing nebulae, starry depths & stellar dust clouds */
+  background-color: #06050e;
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(192, 38, 211, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 30% at 10% 60%, rgba(255, 107, 0, 0.03) 0%, transparent 50%);
+    /* Upper-left: Glowing Carina Nebula - violet & indigo luminescence */
+    radial-gradient(ellipse 95% 65% at 15% -10%, rgba(139, 92, 246, 0.35) 0%, rgba(99, 102, 241, 0.20) 35%, transparent 70%),
+    /* Upper-right: Ionized magenta / fuchsia cosmic gas cloud */
+    radial-gradient(ellipse 85% 60% at 88% 20%, rgba(217, 70, 239, 0.30) 0%, rgba(168, 85, 247, 0.16) 40%, transparent 68%),
+    /* Lower-right: Electric cyan / Aquila stellar wind nursery */
+    radial-gradient(ellipse 80% 55% at 80% 85%, rgba(6, 182, 212, 0.26) 0%, rgba(14, 165, 233, 0.14) 35%, transparent 65%),
+    /* Lower-left: Warm golden amber Sagittarius stellar dust */
+    radial-gradient(ellipse 70% 50% at 12% 80%, rgba(245, 158, 11, 0.18) 0%, rgba(244, 63, 94, 0.10) 35%, transparent 60%),
+    /* Center galactic core glow */
+    radial-gradient(circle at 50% 45%, rgba(124, 58, 237, 0.15) 0%, rgba(192, 38, 211, 0.08) 30%, transparent 60%),
+    /* Deep cosmic canvas with subtle midnight navy & deep plum gradient */
+    linear-gradient(145deg, #0d0822 0%, #080516 40%, #04091a 75%, #030510 100%);
   background-attachment: fixed;
   color: #f5f5f7;
   font-family: -apple-system, 'SF Pro Text', BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Cosmic Aurora haze overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    radial-gradient(circle at 35% 35%, rgba(168, 85, 247, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 75% 65%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(217, 70, 239, 0.10) 0%, transparent 40%);
+  animation: universeAurora 20s ease-in-out infinite alternate;
+}
+
+@keyframes universeAurora {
+  0% {
+    opacity: 0.65;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03) translate(-8px, 6px);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(0.98) translate(6px, -5px);
+  }
 }
 
 /* 100-star CSS starfield via viewport-scaled box-shadow */
@@ -467,4 +506,5 @@ body::before {
   outline: 2px solid rgba(192, 38, 211, 0.6);
   outline-offset: 2px;
 }
+
 

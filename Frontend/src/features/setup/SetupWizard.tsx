@@ -190,9 +190,9 @@ export function SetupWizard({ onLaunch, launchingMode = false }: SetupWizardProp
         launchingMode ? 'animate-grav-warp pointer-events-none' : ''
       }`}
       style={{
-        backgroundColor: '#000000',
+        backgroundColor: '#06050e',
         backgroundImage:
-          'radial-gradient(circle at 50% 50%, rgba(30, 26, 22, 0.5) 0%, transparent 65%), radial-gradient(ellipse 90% 50% at 50% 10%, rgba(65, 58, 50, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(40, 36, 32, 0.25) 0%, transparent 50%)',
+          'radial-gradient(ellipse 90% 60% at 15% 10%, rgba(139, 92, 246, 0.30) 0%, transparent 65%), radial-gradient(ellipse 85% 55% at 85% 25%, rgba(217, 70, 239, 0.25) 0%, transparent 65%), radial-gradient(ellipse 80% 50% at 75% 85%, rgba(6, 182, 212, 0.22) 0%, transparent 60%), radial-gradient(ellipse 70% 45% at 20% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 55%)',
       }}
     >
       {/* Gargantua Accretion Horizon Glow in Background (Interstellar style) */}

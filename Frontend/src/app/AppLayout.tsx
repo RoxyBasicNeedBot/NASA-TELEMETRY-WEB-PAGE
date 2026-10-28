@@ -134,7 +134,7 @@ export function AppLayout() {
       <header
         className="flex items-center gap-4 px-5 py-2.5 shrink-0 z-30 transition-all duration-300"
         style={{
-          background: 'rgba(0, 0, 0, 0.7)',
+          background: 'rgba(7, 5, 20, 0.65)',
           backdropFilter: 'blur(40px)',
           WebkitBackdropFilter: 'blur(40px)',
           boxShadow: '0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 20px rgba(0, 0, 0, 0.4)',
@@ -147,7 +147,7 @@ export function AppLayout() {
             <div className="absolute inset-0 rounded-xl border border-white/20 pointer-events-none" />
           </div>
           <div className="hidden sm:block">
-            <span className="font-bold tracking-tight text-sm heading-VYOMAASTRA">VYOMAASTRA</span>
+            <span className="font-bold tracking-tight text-sm heading-singularity">VYOMAASTRA</span>
             <span className="text-white/40 text-xs ml-2 hidden md:inline font-medium tracking-normal">{missionName}</span>
           </div>
         </div>
@@ -174,7 +174,7 @@ export function AppLayout() {
             sidebarCollapsed ? 'w-[60px]' : 'w-[220px]'
           }`}
           style={{
-            background: 'rgba(0, 0, 0, 0.6)',
+            background: 'rgba(6, 4, 16, 0.55)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
           }}
